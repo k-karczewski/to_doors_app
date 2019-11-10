@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "to_doors_app", "to_doors_app\to_doors_app.csproj", "{C67E1469-8596-42D7-B615-021941EBCA0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "to_doors_app.Models", "to_doors_app.Models\to_doors_app.Models.csproj", "{11859A7A-2875-4E8E-92B7-324D3BFD3DF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "to_doors_app.Interfaces", "to_doors_app.Interfaces\to_doors_app.Interfaces.csproj", "{6328BFE1-30B0-497E-BF15-FE24137B4608}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "to_doors_app.Services", "to_doors_app.Services\to_doors_app.Services.csproj", "{702998AE-5E82-4631-87CE-3567264EAA4B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "to_doors_app.Providers", "to_doors_app.Providers\to_doors_app.Providers.csproj", "{F15CE46C-5974-45C7-A800-4515071E5CF4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "to_doors_app.UnitTests", "to_doors_app.UnitTests\to_doors_app.UnitTests.csproj", "{AB7B5622-6820-4977-A53C-B0364E08EB48}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C67E1469-8596-42D7-B615-021941EBCA0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C67E1469-8596-42D7-B615-021941EBCA0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C67E1469-8596-42D7-B615-021941EBCA0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C67E1469-8596-42D7-B615-021941EBCA0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11859A7A-2875-4E8E-92B7-324D3BFD3DF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11859A7A-2875-4E8E-92B7-324D3BFD3DF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11859A7A-2875-4E8E-92B7-324D3BFD3DF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11859A7A-2875-4E8E-92B7-324D3BFD3DF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6328BFE1-30B0-497E-BF15-FE24137B4608}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6328BFE1-30B0-497E-BF15-FE24137B4608}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6328BFE1-30B0-497E-BF15-FE24137B4608}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6328BFE1-30B0-497E-BF15-FE24137B4608}.Release|Any CPU.Build.0 = Release|Any CPU
+		{702998AE-5E82-4631-87CE-3567264EAA4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{702998AE-5E82-4631-87CE-3567264EAA4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{702998AE-5E82-4631-87CE-3567264EAA4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{702998AE-5E82-4631-87CE-3567264EAA4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F15CE46C-5974-45C7-A800-4515071E5CF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F15CE46C-5974-45C7-A800-4515071E5CF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F15CE46C-5974-45C7-A800-4515071E5CF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F15CE46C-5974-45C7-A800-4515071E5CF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB7B5622-6820-4977-A53C-B0364E08EB48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB7B5622-6820-4977-A53C-B0364E08EB48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB7B5622-6820-4977-A53C-B0364E08EB48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB7B5622-6820-4977-A53C-B0364E08EB48}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C553348A-7528-4F27-836E-B9F7D194B509}
+	EndGlobalSection
+EndGlobal
