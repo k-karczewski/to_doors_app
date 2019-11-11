@@ -22,6 +22,16 @@ namespace to_doors_app.Models
         public int RowInMts { get; }
         public int ColInMts { get; }
 
+        public Module(string name, string baseline, string trNumber, int rowInMts, int colInMts)
+        {
+            Name = name;
+            Baseline = baseline;
+            Files = null;
+            TrNumber = trNumber;
+            RowInMts = rowInMts;
+            ColInMts = colInMts;
+        }
+
         public Module(string name, string baseline, List<File> files, string trNumber, int rowInMts, int colInMts)
         {
             Name = name;
@@ -31,6 +41,5 @@ namespace to_doors_app.Models
             RowInMts = rowInMts;
             ColInMts = colInMts;
         }
-
     }
 }
