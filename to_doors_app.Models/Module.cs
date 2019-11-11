@@ -16,13 +16,13 @@ namespace to_doors_app.Models
         public List<File> Files { get; }
         
         /* property that stores test report number */
-        public int TrNumber { get; }
+        public string TrNumber { get; }
         
         /* coordinates of module in MTS document */
         public int RowInMts { get; }
         public int ColInMts { get; }
 
-        public Module(string name, string baseline, List<File> files, int trNumber, int rowInMts, int colInMts)
+        public Module(string name, string baseline, List<File> files, string trNumber, int rowInMts, int colInMts)
         {
             Name = name;
             Baseline = baseline;
