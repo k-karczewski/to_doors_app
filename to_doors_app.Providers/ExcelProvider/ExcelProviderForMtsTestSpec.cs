@@ -23,7 +23,7 @@ namespace to_doors_app.Providers
                 {
                     string moduleBaseline = ReadCell(row, col + 1);
 
-                    List<File> files = GetFilesInModule(row);
+                    List<File> files = GetFilesInModule(row, true);
 
                     string trNumber = GetTrNumber(row);
 
@@ -33,52 +33,6 @@ namespace to_doors_app.Providers
                 row++;
             }
             return allModulesToReturn;
-        }
-
-        private List<File> GetFilesInModule(int moduleRow)
-        {
-            List<File> files = new List<File>();
-
-            int fileRow = moduleRow + 1;
-            int col = 1;
-
-            string fileName;
-
-            /* search for .c files*/
-            while (ReadCell(fileRow, col).Equals(string.Empty))
-            {
-                fileName = ReadCell(fileRow, col + 2);
-
-                /* if file found */
-                if (!fileName.Equals(string.Empty) && fileName.Contains(".c"))
-                {
-                    fileName = fileName.Replace(".c", "");
-
-                    string fileRevision = ReadCell(fileRow, col + 3);
-
-                    List<string> functions = GetFunctionsOfFile(fileRow);
-
-                    files.Add(new File(fileName, fileRevision, functions));
-                }
-
-                fileRow++;
-            }
-
-            return files;
-        }
-
-        private List<string> GetFunctionsOfFile(int functionRow)
-        {
-            List<string> functions = new List<string>();
-
-            do
-            {
-                functions.Add(ReadCell(functionRow, 5));
-                functionRow++;
-            }
-            while (ReadCell(functionRow + 1, 3).Equals(string.Empty));
-
-            return functions;
         }
     }
 }

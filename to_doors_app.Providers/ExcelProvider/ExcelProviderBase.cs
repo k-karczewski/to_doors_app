@@ -63,9 +63,60 @@ namespace to_doors_app.Providers
         }
 
         /* method not needed in base class */
-        public virtual List<Module> GetDataOfModules(List<string> moduleNames)
+        public virtual List<Module> GetDataOfModules(List<string> moduleNames, bool areFilesNeeded)
         {
             throw new NotImplementedException();
+        }
+
+        protected List<File> GetFilesInModule(int moduleRow, bool areFunctionsNeeded)
+        {
+            List<File> files = new List<File>();
+
+            int fileRow = moduleRow + 1;
+            int col = 1;
+
+            string fileName;
+
+            /* search for .c files*/
+            while (ReadCell(fileRow, col).Equals(string.Empty))
+            {
+                fileName = ReadCell(fileRow, col + 2);
+
+                /* if file found */
+                if (!fileName.Equals(string.Empty) && fileName.Contains(".c"))
+                {
+                    fileName = fileName.Replace(".c", "");
+
+                    string fileRevision = ReadCell(fileRow, col + 3);
+
+                    List<string> functions = null;
+                    
+                    if(areFunctionsNeeded)
+                    {
+                        functions = GetFunctionsOfFile(fileRow);
+                    }
+
+                    files.Add(new File(fileName, fileRevision, functions));
+                }
+
+                fileRow++;
+            }
+
+            return files;
+        }
+
+        private List<string> GetFunctionsOfFile(int functionRow)
+        {
+            List<string> functions = new List<string>();
+
+            do
+            {
+                functions.Add(ReadCell(functionRow, 5));
+                functionRow++;
+            }
+            while (ReadCell(functionRow + 1, 3).Equals(string.Empty));
+
+            return functions;
         }
 
         public virtual string GetSwBaseline()

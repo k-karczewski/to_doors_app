@@ -5,8 +5,8 @@ using to_doors_app.Models;
 
 namespace to_doors_app.Interfaces.Providers
 {
-    public interface IExcelProviderForTestResults : IExcelProviderBase
+    public interface IExcelProviderForResults : IExcelProviderBase
     {
-        List<Module> GetDataOfModules(List<string> moduleNames);
+        List<Module> GetDataOfModules(List<string> moduleNames, bool areFilesNeeded);
     }
 }

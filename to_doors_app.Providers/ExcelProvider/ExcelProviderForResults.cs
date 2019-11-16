@@ -4,11 +4,11 @@ using to_doors_app.Models;
 
 namespace to_doors_app.Providers
 {
-    public class ExcelProviderForUnitResults : ExcelProviderBase, IExcelProviderForTestResults
+    public class ExcelProviderForResults : ExcelProviderBase, IExcelProviderForResults
     {
-        public ExcelProviderForUnitResults(string path, string sheetName): base(path, sheetName) { }
+        public ExcelProviderForResults(string path, string sheetName): base(path, sheetName) { }
 
-        public override List<Module> GetDataOfModules(List<string> moduleNames)
+        public override List<Module> GetDataOfModules(List<string> moduleNames, bool areFilesNeeded)
         {
             List<Module> modulesToReturn = new List<Module>();
             /* start search from const coordinates*/
@@ -25,9 +25,15 @@ namespace to_doors_app.Providers
                     {
                         string moduleBaseline = ReadCell(row, col + 1);
 
-                        List<File> files = GetFilesInModule(row);
+                        List<File> files = null;
+                        
+                        if(areFilesNeeded)
+                        {
+                            files = GetFilesInModule(row, false);
+                        }
 
                         string trNumber = GetTrNumber(row);
+                        
                         modulesToReturn.Add(new Module(currentModuleName, moduleBaseline, files, trNumber, row, col));
 
                         if(modulesToReturn.Count >= moduleNames.Count)
@@ -41,33 +47,6 @@ namespace to_doors_app.Providers
             return modulesToReturn;
         }
 
-        private List<File> GetFilesInModule(int moduleRow)
-        {
-            List<File> files = new List<File>();
 
-            int fileRow = moduleRow + 1;
-            int col = 1;
-
-            string fileName;
-
-            /* search for .c files*/
-            while (ReadCell(fileRow, col).Equals(string.Empty))
-            {
-                fileName = ReadCell(fileRow, col + 2);
-
-                /* if file found */
-                if (!fileName.Equals(string.Empty) && fileName.Contains(".c"))
-                {
-                    fileName = fileName.Replace(".c", "");
-                    string fileRevision = ReadCell(fileRow, col + 3);
-
-                    files.Add(new File(fileName, fileRevision));
-                }
-
-                fileRow++;
-            }
-
-            return files;
-        }
     }
 }
