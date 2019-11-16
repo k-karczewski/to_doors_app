@@ -11,7 +11,7 @@ namespace to_doors_app.Models
         /* version of .c file */
         public string Revision { get; set; }
         /* list of function names included in file - used only in MTS variant*/
-        public List<string> Functions { get; set; }
+        public List<Function> Functions { get; set; } = null;
 
         /*first constructor */
         public File(string name, string revision)
@@ -21,7 +21,7 @@ namespace to_doors_app.Models
         }
 
         /* second constructor */
-        public File(string name, string revision, List<string> functions)
+        public File(string name, string revision, List<Function> functions)
         {
             Name = name;
             Revision = revision;

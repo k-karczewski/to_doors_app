@@ -89,7 +89,7 @@ namespace to_doors_app.Providers
 
                     string fileRevision = ReadCell(fileRow, col + 3);
 
-                    List<string> functions = null;
+                    List<Function> functions = null;
                     
                     if(areFunctionsNeeded)
                     {
@@ -105,13 +105,13 @@ namespace to_doors_app.Providers
             return files;
         }
 
-        private List<string> GetFunctionsOfFile(int functionRow)
+        private List<Function> GetFunctionsOfFile(int functionRow)
         {
-            List<string> functions = new List<string>();
+            List<Function> functions = new List<Function>();
 
             do
             {
-                functions.Add(ReadCell(functionRow, 5));
+                functions.Add(new Function(ReadCell(functionRow, 5)));
                 functionRow++;
             }
             while (ReadCell(functionRow + 1, 3).Equals(string.Empty));
