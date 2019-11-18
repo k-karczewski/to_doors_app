@@ -46,7 +46,8 @@ namespace to_doors_app.Providers.SettingsProvider
 
     public static class SettingsProvider
     {
-        public static string PathToSettingsFile { get; } = "./settings/settings.json";
+        public static string PathToSettingsFile { get; } = "./settings/";
+        public static string SettingsFileName { get; } = "settings.json";
         public static SettingsContainer container = new SettingsContainer();
        
         public static void RestoreDefaultSettings()
@@ -144,7 +145,17 @@ namespace to_doors_app.Providers.SettingsProvider
 
             try
             {
-                System.IO.File.WriteAllText(PathToSettingsFile, serializedDictionary);
+                if(!System.IO.Directory.Exists(PathToSettingsFile))
+                {
+                    System.IO.Directory.CreateDirectory(PathToSettingsFile);
+                }
+
+                if(!System.IO.File.Exists($"{PathToSettingsFile}{SettingsFileName}"))
+                {
+                    System.IO.File.Create($"{PathToSettingsFile}{SettingsFileName}");
+                }
+
+                System.IO.File.WriteAllText($"{PathToSettingsFile}{SettingsFileName}", serializedDictionary);
             }
             catch (Exception ex)
             {
