@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using to_doors_app.Interfaces;
 using to_doors_app.Interfaces.Providers;
 
 namespace to_doors_app.Providers.SettingsProvider
@@ -54,7 +55,7 @@ namespace to_doors_app.Providers.SettingsProvider
             {
                 OperationTypeData = new Dictionary<string, Settings>
                 {
-                    {"UnitTestData", new Settings
+                    {OperationType.Unit_Test_Resuls_From_Tessy.ToString(), new Settings
                         {
                             TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.",
                             TestRealizationProcedureNote = "see references in PTIP, chapter \"Software Unit Tests\", subchapter \"Test Procedure\"",
@@ -69,7 +70,7 @@ namespace to_doors_app.Providers.SettingsProvider
                             MaxNumberOfAttributes = 8
                         }
                     },
-                    { "ModuleIntegrationTestData", new Settings
+                    { OperationType.Module_Integration_Test_Results_From_Tessy.ToString(), new Settings
                         {
                             TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.",
                             TestRealizationProcedureNote = "See references in PTIP, chapter \"3.6.1. Software Integration Test: Software Module Integration Tests\", subchapter \"3.6.1.4 Test Procedure\" (Tessy). See also SDV&V plan\n",
@@ -84,7 +85,7 @@ namespace to_doors_app.Providers.SettingsProvider
                             MaxNumberOfAttributes = 9
                         }
                     },
-                    { "MtsTestSpecData", new Settings
+                    { OperationType.Test_Specification_From_Module_Test_State.ToString(), new Settings
                         {
                             TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.",
                             TestRealizationProcedureNote = "see references in PTIP, chapter \"Software Unit Tests\", subchapter \"Test Procedure\"",
