@@ -6,7 +6,7 @@ using to_doors_app.Models;
 
 namespace to_doors_app.Interfaces.Providers
 {
-    public interface IXmlProviderBase
+    public interface IResultsProviderBase
     {
         void FillResultsOfModule(out Module module);
     }

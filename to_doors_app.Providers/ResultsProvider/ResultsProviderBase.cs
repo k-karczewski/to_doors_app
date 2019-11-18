@@ -5,15 +5,15 @@ using System.Xml.Linq;
 using to_doors_app.Interfaces.Providers;
 using to_doors_app.Models;
 
-namespace to_doors_app.Providers.XmlProvider
+namespace to_doors_app.Providers.ResultsProvider
 {
-    public abstract class XmlProviderBase : IXmlProviderBase
+    public abstract class ResultsProviderBase : IResultsProviderBase
     {
         protected XElement XmlData { get; set; } = null;
         
         protected string ModuleName { get; } = "";
 
-        protected XmlProviderBase(string moduleName) 
+        protected ResultsProviderBase(string moduleName) 
         {
             ModuleName = moduleName;
         }
