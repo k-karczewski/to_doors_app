@@ -8,7 +8,7 @@ namespace to_doors_app.Providers
     {
         public ExcelProviderForMtsTestSpec(string path, string sheetName) : base(path, sheetName) { }
 
-        public override List<Module> GetDataOfAllModules()
+        public override List<Module> GetDataOfAllUnitModules()
         {
             List<Module> allModulesToReturn = new List<Module>();
             /* start search from const coordinates*/
@@ -27,7 +27,7 @@ namespace to_doors_app.Providers
 
                     string trNumber = GetTrNumber(row);
 
-                    allModulesToReturn.Add(new Module(currentModuleName, moduleBaseline, files, trNumber, row, col));
+                    allModulesToReturn.Add(new UnitModule(currentModuleName, moduleBaseline, trNumber, row, col, files));
 
                 }
                 row++;
