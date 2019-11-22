@@ -4,13 +4,13 @@ using to_doors_app.Models;
 
 namespace to_doors_app.Providers
 {
-    public class ExcelProviderForResults : ExcelProviderBase, IExcelProviderForResults
+    public class ExcelProviderForUnitResults : ExcelProviderBase, IExcelProviderForUnitResults
     {
-        public ExcelProviderForResults(string path, string sheetName): base(path, sheetName) { }
+        public ExcelProviderForUnitResults(string path, string sheetName): base(path, sheetName) { }
 
-        public override List<Module> GetDataOfModules(List<string> moduleNames, bool areFilesNeeded)
+        public override List<UnitModule> GetDataOfUnitModules(List<string> moduleNames)
         {
-            List<Module> modulesToReturn = new List<Module>();
+            List<UnitModule> modulesToReturn = new List<UnitModule>();
             /* start search from const coordinates*/
             int row = 12;
             const int col = 1;
@@ -25,16 +25,11 @@ namespace to_doors_app.Providers
                     {
                         string moduleBaseline = ReadCell(row, col + 1);
 
-                        List<File> files = null;
-                        
-                        if(areFilesNeeded)
-                        {
-                            files = GetFilesInModule(row, false);
-                        }
+                        List<File> files = GetFilesInModule(row, false);
 
                         string trNumber = GetTrNumber(row);
                         
-                        modulesToReturn.Add(new Module(currentModuleName, moduleBaseline, files, trNumber, row, col));
+                        modulesToReturn.Add(new UnitModule(currentModuleName, moduleBaseline, trNumber, row, col, files));
 
                         if(modulesToReturn.Count >= moduleNames.Count)
                         {
@@ -46,7 +41,5 @@ namespace to_doors_app.Providers
             }
             return modulesToReturn;
         }
-
-
     }
 }

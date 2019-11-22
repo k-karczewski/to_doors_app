@@ -57,13 +57,19 @@ namespace to_doors_app.Providers
         }
 
         /* method not needed in base class */
-        public virtual List<Module> GetDataOfAllModules()
+        public virtual List<Module> GetDataOfAllUnitModules()
         {
             throw new NotImplementedException();
         }
 
         /* method not needed in base class */
-        public virtual List<Module> GetDataOfModules(List<string> moduleNames, bool areFilesNeeded)
+        public virtual List<UnitModule> GetDataOfUnitModules(List<string> moduleNames)
+        {
+            throw new NotImplementedException();
+        }
+        
+        /* method not needed in base class */
+        public virtual List<IntegrationModule> GetDataOfIntegrationModules(List<string> moduleNames, string sheetName)
         {
             throw new NotImplementedException();
         }
