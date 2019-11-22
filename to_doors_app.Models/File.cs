@@ -10,6 +10,21 @@ namespace to_doors_app.Models
         public string Name { get; set; }
         /* version of .c file */
         public string Revision { get; set; }
+		
+        public int NumberOfTestcases { get; set; } = 0;
+
+        public int NumberOfSuccessfulTestcases { get; set; } = 0;
+
+        public int NumberOfFailedTestcases { get; set; } = 0;
+
+        public int NumberOfNotExecutedTestcases { get; set; } = 0;
+
+        public double ValueOfC1Coverage { get; set; } = 0;
+
+        public double ValueOfMcDcCoverage { get; set; } = 0;
+
+        public string Verdict { get; set; } = "test not done";
+
         /* list of function names included in file - used only in MTS variant*/
         public List<Function> Functions { get; set; } = null;
 
