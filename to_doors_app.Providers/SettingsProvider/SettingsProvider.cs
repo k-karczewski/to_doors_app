@@ -65,7 +65,7 @@ namespace to_doors_app.Providers.SettingsProvider
                             TestExpectedResultNoteDynamic = "- Dynamic Software Unit Tests are Okay (Tessy)\n- Branch Coverage (C1 in Tessy) = 100%, if no rational\n- MC/DC Coverage (C2 in Tessy)  = 100%, if no rational - for SW units on ASIL x",
 
                             PathToTsv = "./Generated tsv files (Unit Tests)/",
-                            PathToOverviewReports = "./Overviews(Unit Tests)/",
+                            PathToOverviewReports = "./Overviews (Unit Tests)/",
                             OverviewReportSufix = "_OverviewReport.xml",
                             TsvFileSufix = "_to_DOORS_units.tsv",
                             MaxNumberOfAttributes = 8
@@ -115,7 +115,7 @@ namespace to_doors_app.Providers.SettingsProvider
                     {"attribute8", "attr_safety_test_method" },
                     {"attribute9", "attr_specification" },
                 },
-                PathToModuleTestState = "./mts/module_test_state.xlsx", /* to be changed later*/
+                PathToModuleTestState = "/mts/module_test_state.xlsx",
                 OkVerdictValue = "o.k.",
                 NokVerdictValue = "n.o.k.",
                 NotTestedVerdictValue = "test not done",
@@ -131,7 +131,7 @@ namespace to_doors_app.Providers.SettingsProvider
         {
             try
             {
-                container = JsonConvert.DeserializeObject<SettingsContainer>(System.IO.File.ReadAllText(PathToSettingsFile));
+                container = JsonConvert.DeserializeObject<SettingsContainer>(System.IO.File.ReadAllText($"{PathToSettingsFile}{SettingsFileName}"));
             }
             catch(Exception ex)
             {
