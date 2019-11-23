@@ -150,12 +150,16 @@ namespace to_doors_app.Providers.SettingsProvider
                     System.IO.Directory.CreateDirectory(PathToSettingsFile);
                 }
 
-                if(!System.IO.File.Exists($"{PathToSettingsFile}{SettingsFileName}"))
+                if(System.IO.File.Exists($"{PathToSettingsFile}{SettingsFileName}"))
                 {
-                    System.IO.File.Create($"{PathToSettingsFile}{SettingsFileName}");
+                    System.IO.File.Delete($"{PathToSettingsFile}{SettingsFileName}");
                 }
 
-                System.IO.File.WriteAllText($"{PathToSettingsFile}{SettingsFileName}", serializedDictionary);
+                using (System.IO.FileStream fs = System.IO.File.Create($"{PathToSettingsFile}{SettingsFileName}"))
+                {
+                    byte[] dictionaryInBytes = Encoding.ASCII.GetBytes(serializedDictionary);
+                    fs.Write(dictionaryInBytes);
+                }
             }
             catch (Exception ex)
             {
