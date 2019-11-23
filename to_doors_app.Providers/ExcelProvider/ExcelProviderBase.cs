@@ -26,7 +26,7 @@ namespace to_doors_app.Providers
         /* constructor */
         public ExcelProviderBase(string path, string sheetName)
         {
-            Path = _IO.Path.GetFullPath(path);
+            Path = _IO.Directory.GetCurrentDirectory() + path;
 
             try
             {
