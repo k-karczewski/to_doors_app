@@ -69,7 +69,7 @@ namespace to_doors_app.Providers
         }
         
         /* method not needed in base class */
-        public virtual List<IntegrationModule> GetDataOfIntegrationModules(List<string> moduleNames, string sheetName)
+        public virtual List<IntegrationModule> GetDataOfIntegrationModules(List<string> moduleNames)
         {
             throw new NotImplementedException();
         }

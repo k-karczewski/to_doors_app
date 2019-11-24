@@ -10,7 +10,7 @@ namespace to_doors_app.Providers.ExcelProvider
     {
         public ExcelProviderForIntegrationResults(string path, string sheetName): base(path, sheetName) { }
 
-        public override List<IntegrationModule> GetDataOfIntegrationModules(List<string> moduleNames, string sheetName)
+        public override List<IntegrationModule> GetDataOfIntegrationModules(List<string> moduleNames)
         {
             List<IntegrationModule> modulesToReturn = new List<IntegrationModule>();
             /* start search from const coordinates*/
