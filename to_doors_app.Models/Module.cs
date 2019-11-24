@@ -11,9 +11,6 @@ namespace to_doors_app.Models
 
         /* property that stores module label / baseline */
         public string Baseline { get; }
-
-        /* list that stores files info */
-        //public List<File> Files { get; }
         
         /* property that stores test report number */
         public string TrNumber { get; }
@@ -30,15 +27,5 @@ namespace to_doors_app.Models
             RowInMts = rowInMts;
             ColInMts = colInMts;
         }
-
-        /*public Module(string name, string baseline, List<File> files, string trNumber, int rowInMts, int colInMts)
-        {
-            Name = name;
-            Baseline = baseline;
-            Files = files;
-            TrNumber = trNumber;
-            RowInMts = rowInMts;
-            ColInMts = colInMts;
-        }*/
     }
 }

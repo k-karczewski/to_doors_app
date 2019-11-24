@@ -13,6 +13,7 @@ namespace to_doors_app.Models
         /* verdict of scenario */
         public string Verdict { get; }
 
+        /* constructor */
         public Scenario(string name, string specification, string verdict)
         {
             Name = name;
