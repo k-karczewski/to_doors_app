@@ -6,8 +6,8 @@ using to_doors_app.Models;
 
 namespace to_doors_app.Interfaces.Providers
 {
-    public interface IResultsProviderBase
+    public interface IResultsProviderBase<T>
     {
-        void FillResultsOfModule(out Module module);
+        void FillResultsOfModules(ref List<T> modules, OperationType operationType);
     }
 }
