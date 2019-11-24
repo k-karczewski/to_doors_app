@@ -7,6 +7,6 @@ namespace to_doors_app.Interfaces.Providers.ExcelProvider
 {
     public interface IExcelProviderForIntegrationResults
     {
-        List<IntegrationModule> GetDataOfIntegrationModules(List<string> moduleNames, string sheetName);
+        List<IntegrationModule> GetDataOfIntegrationModules(List<string> moduleNames);
     }
 }
