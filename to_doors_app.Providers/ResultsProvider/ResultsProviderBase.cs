@@ -18,13 +18,13 @@ namespace to_doors_app.Providers.ResultsProvider
         protected XElement ResultsReport { get; set; } = null;
 
         /* public method which fills modules passed by parameter with results stored in xml files */
-        public void FillResultsOfModules(ref List<T> modulesToFillResults, OperationType operationType)
+        public void FillResultsOfModules(ref List<T> modulesToFillResults)
         {
             /* for every module in list */
             for (int numberOfModule = 0; numberOfModule < modulesToFillResults.Count; numberOfModule++)
             {
                 /* load xml file with results  */
-                if(LoadXmlFile(modulesToFillResults[numberOfModule].Name, operationType))
+                if(LoadXmlFile(modulesToFillResults[numberOfModule].Name))
                 {
                     FillTestObjectResults(modulesToFillResults[numberOfModule]);
                 }
@@ -37,7 +37,7 @@ namespace to_doors_app.Providers.ResultsProvider
         }
 
         /* loads xml report with results for module and operation type specified in parameters*/
-        private bool LoadXmlFile(string moduleName, OperationType operationType)
+        private bool LoadXmlFile(string moduleName)
         {
             /* try to load xml file*/
             try
@@ -48,7 +48,7 @@ namespace to_doors_app.Providers.ResultsProvider
                     /* new object of settings */
                     SettingsProvider.Settings operationData = new SettingsProvider.Settings();
                     /* get settings from dictionary with key value equal to operation type */
-                    _Settings.container.OperationTypeData.TryGetValue(operationType.ToString(), out operationData);
+                    _Settings.container.OperationTypeData.TryGetValue(_Settings.CurrentOperationType, out operationData);
                     /* load xml file*/
                     ResultsReport = XElement.Load($"{operationData.PathToOverviewReports}{moduleName}{operationData.OverviewReportSufix}");
                     /* get test object results from xml file*/

@@ -8,6 +8,6 @@ namespace to_doors_app.Interfaces.Providers
 {
     public interface IResultsProviderBase<T>
     {
-        void FillResultsOfModules(ref List<T> modules, OperationType operationType);
+        void FillResultsOfModules(ref List<T> modules);
     }
 }
