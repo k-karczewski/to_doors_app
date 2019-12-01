@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using to_doors_app.Interfaces;
 using to_doors_app.Interfaces.Providers;
@@ -23,42 +24,39 @@ namespace to_doors_app.Providers.SettingsProvider
 
     public class SettingsContainer
     {
-        public Dictionary<string, Settings> OperationTypeData { get; set; }
+        public Dictionary<OperationType, Settings> OperationTypeData { get; set; }
         public Dictionary<string, string> Attributes { get; set; }
         public string PathToModuleTestState { get; set; }
         public string OkVerdictValue { get; set; }
         public string NokVerdictValue { get; set; }
-        public string NotTestedVerdictValue { get; set; } = "";
+        public string NotTestedVerdictValue { get; set; }
         public string ControllerName { get; set; }
+        public int TrNumberColumn { get; set; }
 
         public SettingsContainer() { }
-        public SettingsContainer(SettingsContainer container) 
-        {
-            OperationTypeData = container.OperationTypeData;
-            Attributes = container.Attributes;
-            PathToModuleTestState = container.PathToModuleTestState;
-            OkVerdictValue = container.OkVerdictValue;
-            NokVerdictValue = container.NokVerdictValue;
-            NotTestedVerdictValue = container.NotTestedVerdictValue;
-            ControllerName = container.ControllerName;
-        }
     }
 
     public static class SettingsProvider
     {
         public static string PathToSettingsFile { get; } = "./settings/";
         public static string SettingsFileName { get; } = "settings.json";
+
+        public static OperationType CurrentOperationType { get; set; } = OperationType.Unit_Test_Resuls_From_Tessy; /* default value (0) */
+        public static string SwBaseline { get; set; }
+
+
         public static SettingsContainer container = new SettingsContainer();
-       
+
+        #region DefaultSettings
         public static void RestoreDefaultSettings()
         {
-            SettingsContainer dataToFile = new SettingsContainer
+            container = new SettingsContainer
             {
-                OperationTypeData = new Dictionary<string, Settings>
+                OperationTypeData = new Dictionary<OperationType, Settings>
                 {
-                    {OperationType.Unit_Test_Resuls_From_Tessy.ToString(), new Settings
+                    {OperationType.Unit_Test_Resuls_From_Tessy, new Settings
                         {
-                            TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.",
+                            TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.\n",
                             TestRealizationProcedureNote = "see references in PTIP, chapter \"Software Unit Tests\", subchapter \"Test Procedure\"",
                             TestFacilitiesEquipmentNote = "see references in PTIP, chapter \"Software Unit Tests\", chapter \"Test Environment / Test Tools\"",
                             TestExpectedResultNoteStatic = "- Software Quality Metrics: Okay(Polyspace).\n- MISRA C:2012 Check: Okay(Polyspace).\n- Programming Guidelines Check: Okay. \n- Software Run-Time-Error check: Okay(Polyspace).",
@@ -71,12 +69,12 @@ namespace to_doors_app.Providers.SettingsProvider
                             MaxNumberOfAttributes = 8
                         }
                     },
-                    { OperationType.Module_Integration_Test_Results_From_Tessy.ToString(), new Settings
+                    { OperationType.Module_Integration_Test_Results_From_Tessy, new Settings
                         {
-                            TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.",
+                            TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.\n",
                             TestRealizationProcedureNote = "See references in PTIP, chapter \"3.6.1. Software Integration Test: Software Module Integration Tests\", subchapter \"3.6.1.4 Test Procedure\" (Tessy). See also SDV&V plan\n",
                             TestFacilitiesEquipmentNote = "See references in PTIP, chapter \"Software Integration Test: Software Module Integration Tests\", chapter \"Test Environment/Test Tools\"\n",
-                            TestExpectedResultNoteStatic = "- Software Quality Metrics: Okay(Polyspace).\n- MISRA C:2012 Check: Okay(Polyspace).\n- Programming Guidelines Check: Okay. \n- Software Run-Time-Error check: Okay(Polyspace).",
+                            TestExpectedResultNoteStatic = "Software Functional Tests are Okay (Tessy). Scenario test result passed (Tessy)",
                             TestExpectedResultNoteDynamic = "Software Functional Tests are Okay (Tessy) \nFunction Coverage 100%\n",
 
                             PathToTsv = "./Generated tsv files (Module Integration Tests)/",
@@ -86,9 +84,9 @@ namespace to_doors_app.Providers.SettingsProvider
                             MaxNumberOfAttributes = 9
                         }
                     },
-                    { OperationType.Test_Specification_From_Module_Test_State.ToString(), new Settings
+                    { OperationType.Test_Specification_From_Module_Test_State, new Settings
                         {
-                            TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.",
+                            TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.\n",
                             TestRealizationProcedureNote = "see references in PTIP, chapter \"Software Unit Tests\", subchapter \"Test Procedure\"",
                             TestFacilitiesEquipmentNote = "see references in PTIP, chapter \"Software Unit Tests\", chapter \"Test Environment / Test Tools\"",
                             TestExpectedResultNoteStatic = "- Software Quality Metrics: Okay(Polyspace).\n- MISRA C:2012 Check: Okay(Polyspace).\n- Programming Guidelines Check: Okay. \n- Software Run-Time-Error check: Okay(Polyspace).",
@@ -113,19 +111,20 @@ namespace to_doors_app.Providers.SettingsProvider
                     {"attribute6", "attr_test_actual_results" },
                     {"attribute7", "attr_test_verdict" },
                     {"attribute8", "attr_safety_test_method" },
-                    {"attribute9", "attr_specification" },
+                    {"attribute9", "attr_specification_reference" },
                 },
+
                 PathToModuleTestState = "/mts/module_test_state.xlsx",
                 OkVerdictValue = "o.k.",
                 NokVerdictValue = "n.o.k.",
                 NotTestedVerdictValue = "test not done",
-                ControllerName = "Main Controller"
+                ControllerName = "Main Controller",
+                TrNumberColumn = 55
             };
 
-            container = dataToFile;
-
-            SaveSettingsInFile(dataToFile);
+            SaveSettingsInFile();
         }
+        #endregion
 
         public static void LoadSettingsFromFile()
         {
@@ -139,9 +138,9 @@ namespace to_doors_app.Providers.SettingsProvider
             }
         }
 
-        public static void SaveSettingsInFile(SettingsContainer settings)
+        public static void SaveSettingsInFile()
         {
-            string serializedDictionary = JsonConvert.SerializeObject(settings, Formatting.Indented);
+            string serializedDictionary = JsonConvert.SerializeObject(container, Formatting.Indented);
 
             try
             {
@@ -165,6 +164,23 @@ namespace to_doors_app.Providers.SettingsProvider
             {
                 /* show error during writing json file*/
             }
+        }
+
+        public static string GetSetting(OperationType operationType, string key)
+        {
+            Settings settings = container.OperationTypeData.FirstOrDefault(x => x.Key == operationType).Value;
+
+            return settings.GetType().GetProperty(key).GetValue(settings, null).ToString();
+        }
+
+        public static void SetOperationType(OperationType operationType)
+        {
+            CurrentOperationType = operationType;
+        }
+
+        public static void SetSwBaseline(string swBaseline)
+        {
+            SwBaseline = swBaseline;
         }
 
     }
