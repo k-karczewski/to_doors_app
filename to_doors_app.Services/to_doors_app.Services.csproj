@@ -1,7 +1,12 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\to_doors_app.Interfaces\to_doors_app.Interfaces.csproj" />
+    <ProjectReference Include="..\to_doors_app.Providers\to_doors_app.Providers.csproj" />
+  </ItemGroup>
 
 </Project>
