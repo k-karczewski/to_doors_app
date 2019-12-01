@@ -4,9 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:to_doors_app"
+        xmlns:MainVM="clr-namespace:to_doors_app.ViewModels;assembly=to_doors_app.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="to_doors_app - TSV file generator" Height="800" Width="600">
+    <Window.DataContext>
+        <MainVM:GeneratorViewModel/>
+    </Window.DataContext>
     <Grid>
-
+        <GroupBox Header="1. Choose operation type" Margin="10,10,10,25" Height="55" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <ComboBox Margin="5" ItemsSource="{Binding OperationsList}" SelectedItem="{Binding ActualOperationType}"/>
+        </GroupBox>
+        <GroupBox Header="2. Choose Module Test State file" Margin="10,70,10,500" Height="52" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80*"/>
+                    <ColumnDefinition Width="20*" />
+                </Grid.ColumnDefinitions>
+                <TextBox Grid.Column="0" Height="24" Margin ="5,0,0,0" HorizontalAlignment="Stretch" IsEnabled="False" Text="{Binding MtsFilePath}"/>
+                <Button Grid.Column="1" Width="80" Height="24" Content="Change" HorizontalAlignment="Stretch" Command="{Binding OpenMtsFileCommand}" />
+            </Grid>
+        </GroupBox>
+        <GroupBox Header="3. Choose MTS sheet" Margin="10,130,10,25" Height="55" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <ComboBox Margin="5" ItemsSource="{Binding MtsSheets}" SelectedItem="{Binding ActualMtsSheet}" IsEnabled="{Binding IsSheetsDropdownEnabled}"/>
+        </GroupBox>
+        <GroupBox Header="4. Select Overview reports" Margin="10,185,10,25" Height="55" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+            <ComboBox Margin="5" ItemsSource="{Binding MtsSheets}" SelectedItem="{Binding ActualMtsSheet}" IsEnabled="{Binding IsSheetsDropdownEnabled}"/>
+        </GroupBox>
     </Grid>
 </Window>

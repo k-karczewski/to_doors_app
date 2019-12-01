@@ -6,4 +6,8 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\to_doors_app.ViewModels\to_doors_app.ViewModels.csproj" />
+  </ItemGroup>
+
 </Project>
