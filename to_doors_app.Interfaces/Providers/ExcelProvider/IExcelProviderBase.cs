@@ -5,18 +5,12 @@ using to_doors_app.Models;
 
 namespace to_doors_app.Interfaces.Providers
 {
-    public interface IExcelProviderBase
+    public interface IExcelProviderBase<T>
     {
-        bool IsDocumentLoaded();
-        
-        List<string> GetSheetNames();
-
-        string GetTrNumber(int moduleRow);
-
-        string GetSwBaseline();
-
-        string ReadCell(int row, int col);
-
+        List<string> GetSheetNames(string path);
+        void SetSheetName(string sheetName);
+        void GetDataOfModules(List<string> moduleNames, ref List<T> modulesToReturn);
+        void GetDataOfModules(ref List<T> allModulesToReturn);
         void CloseDocument();
     }
 }
