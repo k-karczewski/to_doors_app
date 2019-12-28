@@ -6,29 +6,211 @@
         xmlns:local="clr-namespace:to_doors_app"
         xmlns:MainVM="clr-namespace:to_doors_app.ViewModels;assembly=to_doors_app.ViewModels"
         mc:Ignorable="d"
-        Title="to_doors_app - TSV file generator" Height="800" Width="600">
+        Title="to_doors_app - TSV file generator" Height="750" Width="700">
     <Window.DataContext>
         <MainVM:GeneratorViewModel/>
     </Window.DataContext>
+    <Window.Resources >
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    </Window.Resources>
     <Grid>
-        <GroupBox Header="1. Choose operation type" Margin="10,10,10,25" Height="55" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-            <ComboBox Margin="5" ItemsSource="{Binding OperationsList}" SelectedItem="{Binding ActualOperationType}"/>
+        <GroupBox Header="1. Choose operation type" 
+                  Margin="10,10,10,25"  
+                  Padding="4"
+                  VerticalAlignment="Top" 
+                  HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                </Grid.RowDefinitions>
+                <ComboBox Margin="6" 
+                      Grid.Column="0"
+                      Grid.Row="0"
+                      ItemsSource="{Binding AvailableOperationsList}" 
+                      SelectedItem="{Binding ActualOperation}" />
+            </Grid>
+
         </GroupBox>
-        <GroupBox Header="2. Choose Module Test State file" Margin="10,70,10,500" Height="52" VerticalAlignment="Top" HorizontalAlignment="Stretch">
+       <GroupBox Header="2. Choose Module Test State file" 
+                 Margin="10,85,10,500" 
+                 Padding="6"
+                 VerticalAlignment="Top" 
+                 HorizontalAlignment="Stretch">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="80*"/>
                     <ColumnDefinition Width="20*" />
                 </Grid.ColumnDefinitions>
-                <TextBox Grid.Column="0" Height="24" Margin ="5,0,0,0" HorizontalAlignment="Stretch" IsEnabled="False" Text="{Binding MtsFilePath}"/>
-                <Button Grid.Column="1" Width="80" Height="24" Content="Change" HorizontalAlignment="Stretch" Command="{Binding OpenMtsFileCommand}" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="26"/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Column="0" 
+                         Grid.Row="0"
+                         Margin ="6,0,0,0" 
+                         HorizontalAlignment="Stretch" 
+                         IsEnabled="False" 
+                         Text="{Binding MtsFilePath}"/>
+                <Button Grid.Column="1" 
+                        Width="120" 
+                        Content="Change" 
+                        HorizontalAlignment="Stretch" 
+                        Command="{Binding OpenMtsFileCommand}" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="3. Choose MTS sheet" Margin="10,130,10,25" Height="55" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-            <ComboBox Margin="5" ItemsSource="{Binding MtsSheets}" SelectedItem="{Binding ActualMtsSheet}" IsEnabled="{Binding IsSheetsDropdownEnabled}"/>
+        <GroupBox Header="3. Choose MTS sheet" 
+                  Margin="10,150,10,25" 
+                  Padding="6"
+                  VerticalAlignment="Top" 
+                  HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="36"/>
+                </Grid.RowDefinitions>
+                <ComboBox Margin="6" 
+                          Grid.Column="0"
+                          Grid.Row="0"
+                          ItemsSource="{Binding MtsSheets}" 
+                          SelectedItem="{Binding ActualMtsSheet}" 
+                          IsEnabled="{Binding IsSheetsDropdownEnabled}"/>
+            </Grid>
         </GroupBox>
-        <GroupBox Header="4. Select Overview reports" Margin="10,185,10,25" Height="55" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-            <ComboBox Margin="5" ItemsSource="{Binding MtsSheets}" SelectedItem="{Binding ActualMtsSheet}" IsEnabled="{Binding IsSheetsDropdownEnabled}"/>
+        <Grid Margin="10,233,10,290">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="35*"/>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="35*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="35"/>
+                <RowDefinition Height="200"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Column="1"
+                    Grid.Row="0"
+                    Margin="0,8,0,0"
+                    Command="{Binding OpenOverviewReportsCommand}"
+                    Visibility="{Binding IsReportsSectionVisible , Converter={StaticResource BoolToVisibilityConverter}}">
+                    <!--IsEnabled="{Binding IsSheetsDropdownEnabled}"-->
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="16" 
+                           Width="16" 
+                           Source="pack://application:,,,/Resources/plus.png">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <TextBlock FontSize="14" 
+                               Margin="4,0"
+                               Text="Add report"/>
+                </StackPanel>
+            </Button>
+            <Button Grid.Column="3"
+                    Grid.Row="0"
+                    Margin="0,8,0,0"
+                    Command="{Binding RemoveObjectFromDataGridCommand}"
+                    Visibility="{Binding IsReportsSectionVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                   <!-- IsEnabled="{Binding IsRemovingRowAvailable}"--> 
+                
+                <StackPanel Orientation="Horizontal">
+                    <Image Height="20" 
+                           Width="20" 
+                           Source="pack://application:,,,/Resources/cross.png">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.5" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <TextBlock FontSize="14" 
+                               Margin="4,0"
+                               Text="Delete report"/>
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Grid Margin="10,285,10,250">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150"/>
+            </Grid.RowDefinitions>
+            <DataGrid ItemsSource="{Binding ModulesForUi}"
+                      SelectedItem = "{Binding Path=SelectedObject, Mode=TwoWay}"
+                      AutoGenerateColumns="False"
+                      AlternatingRowBackground="Gray"
+                      CanUserAddRows="False"
+                      CanUserDeleteRows="False"
+                      CanUserResizeRows="False"
+                      Visibility="{Binding Path=IsReportsSectionVisible, Converter={StaticResource BoolToVisibilityConverter}}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Module Name" 
+                                        Binding="{Binding Path=Name}"
+                                        Width="33*"/>
+                    <DataGridTextColumn Header="Module Baseline" 
+                                        Binding="{Binding Path=Baseline}"
+                                        Width="33*"/>
+                    <DataGridTextColumn Header="Test Report Number" 
+                                        Binding="{Binding Path=TrNumber}"
+                                        Width="33*"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <GroupBox Header="5. Choose output path" 
+                 Margin="10,450,10,200" 
+                 Padding="6"
+                 VerticalAlignment="Top" 
+                 HorizontalAlignment="Stretch">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="80*"/>
+                    <ColumnDefinition Width="20*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="26"/>
+                </Grid.RowDefinitions>
+                <TextBox Grid.Column="0" 
+                         Grid.Row="0"
+                         Margin ="6,0,0,0" 
+                         HorizontalAlignment="Stretch" 
+                         IsEnabled="False" 
+                         Text="{Binding OutputPath}"/>
+                <Button Grid.Column="1" 
+                        Width="120" 
+                        Content="Change" 
+                        HorizontalAlignment="Stretch" 
+                        Command="{Binding OpenOutputDirectoryCommand}"/>
+            </Grid>
         </GroupBox>
+        <Grid Margin="10,570,10,50">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="25*"/>
+                <ColumnDefinition Width="50*"/>
+                <ColumnDefinition Width="25*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="80"/>
+            </Grid.RowDefinitions>
+            <Button Grid.Column="1" 
+                    Content="Generate files" 
+                    FontSize="20"
+                    Command="{Binding GenerateFilesCommand}"/>
+        </Grid>
     </Grid>
 </Window>

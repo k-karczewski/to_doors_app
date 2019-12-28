@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:to_doors_app"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <Image x:Key="PlusImage" Source="./Images/plus.png"/>
     </Application.Resources>
 </Application>

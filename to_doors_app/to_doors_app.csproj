@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\cross.png" />
+    <None Remove="Resources\plus.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\to_doors_app.ViewModels\to_doors_app.ViewModels.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\cross.png" />
+    <Resource Include="Resources\plus.png" />
   </ItemGroup>
 
 </Project>
