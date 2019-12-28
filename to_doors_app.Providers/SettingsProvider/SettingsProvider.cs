@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using to_doors_app.Interfaces;
 using to_doors_app.Interfaces.Providers;
 
@@ -43,7 +44,6 @@ namespace to_doors_app.Providers.SettingsProvider
 
         public static OperationType CurrentOperationType { get; set; } = OperationType.Unit_Test_Resuls_From_Tessy; /* default value (0) */
         public static string SwBaseline { get; set; }
-
 
         public static SettingsContainer container = new SettingsContainer();
 
@@ -134,7 +134,7 @@ namespace to_doors_app.Providers.SettingsProvider
             }
             catch(Exception ex)
             {
-                /* show error during reading json file*/
+                MessageBox.Show($"Error during reading settings file (file may not exist): {ex}");
             }
         }
 
@@ -162,7 +162,7 @@ namespace to_doors_app.Providers.SettingsProvider
             }
             catch (Exception ex)
             {
-                /* show error during writing json file*/
+                MessageBox.Show($"Error during saving settings in file: {ex}");
             }
         }
 
@@ -178,8 +178,9 @@ namespace to_doors_app.Providers.SettingsProvider
             Settings settings = container.OperationTypeData.FirstOrDefault(x => x.Key == operationType).Value;
 
             settings.GetType().GetProperty(key).SetValue(settings, value);
-        }
 
+            SaveSettingsInFile();
+        }
 
         public static void SetOperationType(OperationType operationType)
         {
