@@ -17,6 +17,9 @@
       <HintPath>..\..\to_doors_app_console\to_doors_app\to_doors_app\bin\Debug\netcoreapp3.0\Microsoft.Office.Interop.Excel.dll</HintPath>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </Reference>
+    <Reference Include="PresentationFramework">
+      <HintPath>..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\PresentationFramework\v4.0_4.0.0.0__31bf3856ad364e35\PresentationFramework.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
