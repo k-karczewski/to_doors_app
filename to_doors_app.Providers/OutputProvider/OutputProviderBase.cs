@@ -8,7 +8,7 @@ using _Settings = to_doors_app.Providers.SettingsProvider.SettingsProvider;
 
 namespace to_doors_app.Providers.OutputProvider
 {
-    public class OutputProviderBase<T> : IOutputProviderBase<T> where T: Module
+    public abstract class OutputProviderBase<T> : IOutputProviderBase<T> where T: Module
     {
         protected List<T> ModulesToGenerate { get; set; } = null;
         protected string PathToTsvLocation { get; set; } = string.Empty;
@@ -31,8 +31,6 @@ namespace to_doors_app.Providers.OutputProvider
             ModulesToGenerate = modulesTogenerate;
 
             LoadSettings();
-            /* create output folder if it is missing */
-            CreateDirectory();
 
             /* start generating .tsv file */
             foreach (T module in ModulesToGenerate)
@@ -144,7 +142,7 @@ namespace to_doors_app.Providers.OutputProvider
             }
 
             /* write buffer to file */
-            using (_IO.StreamWriter sw = _IO.File.AppendText($"{PathToTsvLocation}{CurrentProceededModuleName}{TsvFileSufix}"))
+            using (_IO.StreamWriter sw = _IO.File.AppendText($"{PathToTsvLocation}\\{CurrentProceededModuleName}{TsvFileSufix}"))
             {
                 sw.Write(output);
             }
