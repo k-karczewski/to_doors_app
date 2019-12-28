@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:to_doors_app"
         xmlns:MainVM="clr-namespace:to_doors_app.ViewModels;assembly=to_doors_app.ViewModels"
         mc:Ignorable="d"
-        Title="to_doors_app - TSV file generator" Height="750" Width="700">
+        Title="to_doors_app - TSV file generator" Height="750" Width="700" ResizeMode="NoResize">
     <Window.DataContext>
         <MainVM:GeneratorViewModel/>
     </Window.DataContext>
@@ -158,11 +158,14 @@
                       CanUserAddRows="False"
                       CanUserDeleteRows="False"
                       CanUserResizeRows="False"
+                      CanUserReorderColumns="False"
+                      CanUserResizeColumns="False"
                       Visibility="{Binding Path=IsReportsSectionVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Module Name" 
                                         Binding="{Binding Path=Name}"
-                                        Width="33*"/>
+                                        Width="33*"
+                                        IsReadOnly="True"/>
                     <DataGridTextColumn Header="Module Baseline" 
                                         Binding="{Binding Path=Baseline}"
                                         Width="33*"/>
