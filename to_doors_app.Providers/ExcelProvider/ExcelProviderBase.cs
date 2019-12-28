@@ -10,7 +10,7 @@ using _Settings = to_doors_app.Providers.SettingsProvider.SettingsProvider;
 
 namespace to_doors_app.Providers
 {
-    public class ExcelProviderBase<T> : IExcelProviderBase<T>
+    public abstract class ExcelProviderBase<T> : IExcelProviderBase<T>
     {
         /* excel process */
         public _Excel.Application Excel { get; set; } = null;
