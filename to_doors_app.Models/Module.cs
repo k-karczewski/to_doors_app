@@ -10,16 +10,19 @@ namespace to_doors_app.Models
         public string Name { get; }
 
         /* property that stores module label / baseline */
-        public string Baseline { get; }
+        public string Baseline { get; set; }
         
         /* property that stores test report number */
-        public string TrNumber { get; }
+        public string TrNumber { get; set; }
         
         /* coordinates of module in MTS document */
         public int RowInMts { get; }
         public int ColInMts { get; }
 
-       public Module(string name, string baseline, string trNumber, int rowInMts, int colInMts)
+        /* path to overview results report (.xml)*/
+        public string PathToOverviewReport { get; set; } = string.Empty; /* data not loaded yet*/
+
+        public Module(string name, string baseline, string trNumber, int rowInMts, int colInMts)
         {
             Name = name;
             Baseline = baseline;
