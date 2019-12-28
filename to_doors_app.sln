@@ -13,11 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "to_doors_app.Services", "to
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "to_doors_app.Providers", "to_doors_app.Providers\to_doors_app.Providers.csproj", "{F15CE46C-5974-45C7-A800-4515071E5CF4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "to_doors_app._UnitTests", "to_doors_app.UnitTests\to_doors_app._UnitTests.csproj", "{AB7B5622-6820-4977-A53C-B0364E08EB48}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "to_doors_app._IntegrationTests", "to_doors_app._IntegrationTests\to_doors_app._IntegrationTests.csproj", "{86603535-30C5-47AB-8F44-A5E139636805}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "to_doors_app.ViewModels", "to_doors_app.ViewModels\to_doors_app.ViewModels.csproj", "{35E6D9F2-2411-41DF-B01E-6AF322359C87}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "to_doors_app.ViewModels", "to_doors_app.ViewModels\to_doors_app.ViewModels.csproj", "{35E6D9F2-2411-41DF-B01E-6AF322359C87}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,14 +41,6 @@ Global
 		{F15CE46C-5974-45C7-A800-4515071E5CF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F15CE46C-5974-45C7-A800-4515071E5CF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F15CE46C-5974-45C7-A800-4515071E5CF4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AB7B5622-6820-4977-A53C-B0364E08EB48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AB7B5622-6820-4977-A53C-B0364E08EB48}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AB7B5622-6820-4977-A53C-B0364E08EB48}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AB7B5622-6820-4977-A53C-B0364E08EB48}.Release|Any CPU.Build.0 = Release|Any CPU
-		{86603535-30C5-47AB-8F44-A5E139636805}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{86603535-30C5-47AB-8F44-A5E139636805}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{86603535-30C5-47AB-8F44-A5E139636805}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{86603535-30C5-47AB-8F44-A5E139636805}.Release|Any CPU.Build.0 = Release|Any CPU
 		{35E6D9F2-2411-41DF-B01E-6AF322359C87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{35E6D9F2-2411-41DF-B01E-6AF322359C87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35E6D9F2-2411-41DF-B01E-6AF322359C87}.Release|Any CPU.ActiveCfg = Release|Any CPU
