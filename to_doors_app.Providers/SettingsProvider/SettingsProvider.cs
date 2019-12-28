@@ -173,6 +173,14 @@ namespace to_doors_app.Providers.SettingsProvider
             return settings.GetType().GetProperty(key).GetValue(settings, null).ToString();
         }
 
+        public static void SetSetting(OperationType operationType, string key, string value)
+        {
+            Settings settings = container.OperationTypeData.FirstOrDefault(x => x.Key == operationType).Value;
+
+            settings.GetType().GetProperty(key).SetValue(settings, value);
+        }
+
+
         public static void SetOperationType(OperationType operationType)
         {
             CurrentOperationType = operationType;
