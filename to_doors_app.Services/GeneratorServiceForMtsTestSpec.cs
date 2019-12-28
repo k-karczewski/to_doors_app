@@ -18,5 +18,21 @@ namespace to_doors_app.Services
             ExcelProvider = new ExcelProviderForUnits();
             OutputProvider = new OutputProviderForUnits();
         }
+
+        protected override void GenerateTsvFiles()
+        {
+            OutputProvider.GenerateFiles(ref ModulesData);
+        }
+
+        public override bool IsServiceReadyToGenerateFiles()
+        {
+            if (ExcelProvider != null &&
+                OutputProvider != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

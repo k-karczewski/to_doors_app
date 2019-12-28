@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Caliburn.Micro.Core" Version="3.2.0" />
+    <PackageReference Include="WindowsAPICodePack-Shell" Version="1.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\to_doors_app.Providers\to_doors_app.Providers.csproj" />
     <ProjectReference Include="..\to_doors_app.Services\to_doors_app.Services.csproj" />
   </ItemGroup>

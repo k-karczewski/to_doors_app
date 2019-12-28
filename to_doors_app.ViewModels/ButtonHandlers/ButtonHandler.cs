@@ -27,5 +27,7 @@ namespace to_doors_app.ViewModels.ButtonHandlers
         {
             return _canExecute.Invoke();
         }
+
+        public void InvokeCanExecuteChanged() => CanExecuteChanged?.Invoke(this, EventArgs.Empty);
     }
 }
