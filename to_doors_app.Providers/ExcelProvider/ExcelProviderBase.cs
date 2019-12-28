@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using to_doors_app.Interfaces.Providers;
 using to_doors_app.Models;
 using _Excel = Microsoft.Office.Interop.Excel;
@@ -66,7 +67,8 @@ namespace to_doors_app.Providers
 
             foreach (_Excel.Worksheet sheet in Workbook.Worksheets)
             {
-                sheetNames.Add(sheet.Name);
+                if(sheet.Name.Contains("diff"))
+                    sheetNames.Add(sheet.Name);
             }
 
             return sheetNames;
@@ -89,7 +91,7 @@ namespace to_doors_app.Providers
             }
             else
             {
-                return "0";
+                return "--";
             }
         }
 
@@ -117,7 +119,7 @@ namespace to_doors_app.Providers
             }
             catch(Exception ex)
             {
-                /*MessageBox.Show($"{ex.Message}", "Error");*/
+                MessageBox.Show($"{ex.Message}", "Error");
             }
             return string.Empty;
         }
