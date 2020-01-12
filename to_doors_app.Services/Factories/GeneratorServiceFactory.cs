@@ -10,19 +10,25 @@ namespace to_doors_app.Services.Factories
     {
         private static IGeneratorServiceBase _generatorService;
 
-        public static IGeneratorServiceBase CreateService(OperationType operation)
+        /// <summary>
+        /// Creates intance of IGeneratorServiceBase based on operation type
+        /// </summary>
+        /// <param name="operation">Operation type</param>
+        /// <param name="eventHandler">Event handler that provides showing progress informations on UI</param>
+        /// <returns>Instance of IGeneratorServiceBase</returns>
+        public static IGeneratorServiceBase CreateService(OperationType operation, EventHandler<string> eventHandler)
         {
             if(operation.Equals(OperationType.Unit_Test_Resuls_From_Tessy))
             {
-                _generatorService = new GeneratorServiceForUnitResults();
+                _generatorService = new GeneratorServiceForUnitResults(eventHandler);
             }
             else if(operation.Equals(OperationType.Module_Integration_Test_Results_From_Tessy))
             {
-                _generatorService = new GeneratorServiceForIntegrationResults();
+                _generatorService = new GeneratorServiceForIntegrationResults(eventHandler);
             }
             else
             {
-                _generatorService = new GeneratorServiceForMtsTestSpec();
+                _generatorService = new GeneratorServiceForMtsTestSpec(eventHandler);
             }
 
             return _generatorService;
