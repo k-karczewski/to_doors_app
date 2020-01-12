@@ -168,6 +168,11 @@ namespace to_doors_app.Providers.SettingsProvider
 
         public static string GetSetting(OperationType operationType, string key)
         {
+            if(System.IO.File.Exists($"{PathToSettingsFile}{SettingsFileName}") == false)
+            {
+                RestoreDefaultSettings();
+            }
+
             Settings settings = container.OperationTypeData.FirstOrDefault(x => x.Key == operationType).Value;
 
             return settings.GetType().GetProperty(key).GetValue(settings, null).ToString();
