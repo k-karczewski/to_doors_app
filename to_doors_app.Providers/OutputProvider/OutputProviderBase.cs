@@ -10,6 +10,8 @@ namespace to_doors_app.Providers.OutputProvider
 {
     public abstract class OutputProviderBase<T> : IOutputProviderBase<T> where T: Module
     {
+        public event EventHandler<string> ShowWorkProgressEvent;
+
         protected List<T> ModulesToGenerate { get; set; } = null;
         protected string PathToTsvLocation { get; set; } = string.Empty;
         protected string TsvFileSufix { get; set; } = string.Empty;
@@ -36,9 +38,11 @@ namespace to_doors_app.Providers.OutputProvider
             foreach (T module in ModulesToGenerate)
             {
                 CurrentProceededModuleName = module.Name;
+                ChangeProgressInfo($"Generating .tsv file of module {CurrentProceededModuleName}");
                 SendHeaderInfo();
                 PrepareTestData(module);
             }
+            ChangeProgressInfo("Done");
         }
 
         /* prepares header info (attributes, controller name) and sends it to file */
@@ -164,6 +168,11 @@ namespace to_doors_app.Providers.OutputProvider
             {
                 elements.Add("");
             }
+        }
+
+        protected void ChangeProgressInfo(string message)
+        {
+            ShowWorkProgressEvent?.Invoke(this, message);
         }
     }
 }
