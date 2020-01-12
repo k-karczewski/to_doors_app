@@ -11,13 +11,14 @@ namespace to_doors_app.Services
 {
     public class GeneratorServiceForIntegrationResults : GeneratorServiceBase<IntegrationModule>
     {
-        public GeneratorServiceForIntegrationResults()
+        public GeneratorServiceForIntegrationResults(EventHandler<string> eventHandler) : base()
         {
             Operation = Interfaces.OperationType.Module_Integration_Test_Results_From_Tessy;
             SettingsProvider.SetOperationType(Operation);
             ExcelProvider = new ExcelProviderForIntegration();
             ResultsProvider = new ResultsProviderForIntegration();
             OutputProvider = new OutputProviderForIntegration();
+            ListenToProgressEvents(eventHandler);
         }
     }
 }
