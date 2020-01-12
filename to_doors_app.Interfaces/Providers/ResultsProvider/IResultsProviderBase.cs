@@ -8,6 +8,8 @@ namespace to_doors_app.Interfaces.Providers
 {
     public interface IResultsProviderBase<T>
     {
+        event EventHandler<string> ShowWorkProgressEvent;
+
         void FillResultsOfModules(ref List<T> modules);
     }
 }
