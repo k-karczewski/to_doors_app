@@ -16,6 +16,7 @@ namespace to_doors_app.Providers.ExcelProvider
             /* start search from const coordinates*/
             int row = 12;
             const int col = 1;
+            ChangeProgressInfo("Getting data from module test state");
 
             _Settings.SetSwBaseline(GetSwBaseline());
 
@@ -27,6 +28,7 @@ namespace to_doors_app.Providers.ExcelProvider
                 {
                     if (moduleNames.Contains(currentModuleName))
                     {
+                        ChangeProgressInfo($"Reading from mts data of module {currentModuleName}");
                         string moduleBaseline = ReadCell(row, col + 1);
 
                         List<File> files = GetFilesInModule(row);
@@ -43,20 +45,24 @@ namespace to_doors_app.Providers.ExcelProvider
                 }
                 row++;
             }
+            ChangeProgressInfo("Done");
         }
 
-        public override void GetDataOfModules(ref List<UnitModule> allModulesToReturn)
+        public void GetDataOfModules(ref List<UnitModule> allModulesToReturn)
         {
             /* start search from const coordinates*/
             int row = 12;
             const int col = 1;
 
+            ChangeProgressInfo("Getting all modules data from module test state");
             while (ReadCell(row, col) != "Total:")
             {
                 string currentModuleName = ReadCell(row, col);
 
                 if (!currentModuleName.Equals(string.Empty))
                 {
+                    ChangeProgressInfo($"Reading from mts data of module {currentModuleName}");
+
                     string moduleBaseline = ReadCell(row, col + 1);
 
                     List<File> files = GetFilesInModule(row);
@@ -68,6 +74,8 @@ namespace to_doors_app.Providers.ExcelProvider
                 }
                 row++;
             }
+
+            ChangeProgressInfo("Done");
         }
 
         private List<File> GetFilesInModule(int moduleRow)

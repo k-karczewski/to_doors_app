@@ -17,6 +17,8 @@ namespace to_doors_app.Providers.ExcelProvider
             int row = 12;
             const int col = 1;
 
+            ChangeProgressInfo("Getting data from module test state");
+
             _Settings.SetSwBaseline(GetSwBaseline());
 
             while (ReadCell(row, col) != "Total:")
@@ -27,6 +29,7 @@ namespace to_doors_app.Providers.ExcelProvider
                 {
                     if (moduleNames.Contains(currentModuleName))
                     {
+                        ChangeProgressInfo($"Processing module {currentModuleName}");
                         string moduleBaseline = ReadCell(row, col + 1);
 
                         string trNumber = GetTrNumber(row);
@@ -41,6 +44,7 @@ namespace to_doors_app.Providers.ExcelProvider
                 }
                 row++;
             }
+            ChangeProgressInfo("Done");
         }
     }
 }
