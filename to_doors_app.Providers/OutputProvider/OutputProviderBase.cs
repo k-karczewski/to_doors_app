@@ -34,11 +34,20 @@ namespace to_doors_app.Providers.OutputProvider
 
             LoadSettings();
 
-            /* start generating .tsv file */
+            // start generating .tsv files
             foreach (T module in ModulesToGenerate)
             {
                 CurrentProceededModuleName = module.Name;
                 ChangeProgressInfo($"Generating .tsv file of module {CurrentProceededModuleName}");
+
+                // if file with this name exists in output folder
+                if (_IO.File.Exists($"{PathToTsvLocation}\\{CurrentProceededModuleName}{TsvFileSufix}"))
+                {
+                    // delete it
+                    _IO.File.Delete($"{PathToTsvLocation}\\{CurrentProceededModuleName}{TsvFileSufix}");
+                }
+
+                // start creating new file
                 SendHeaderInfo();
                 PrepareTestData(module);
             }
