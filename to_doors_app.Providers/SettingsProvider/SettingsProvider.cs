@@ -134,7 +134,7 @@ namespace to_doors_app.Providers.SettingsProvider
             }
             catch(Exception ex)
             {
-                MessageBox.Show($"Error during reading settings file (file may not exist): {ex}");
+                //MessageBox.Show($"Error during reading settings file (file may not exist): {ex}");
             }
         }
 
