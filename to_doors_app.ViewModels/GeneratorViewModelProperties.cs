@@ -38,7 +38,6 @@ namespace to_doors_app.ViewModels
         {
             _Settings.LoadSettingsFromFile();
             ActualOperation = AvailableOperationsList[0]; /* unit results by default */
-            ModulesForUi = new BindableCollection<ModuleToUiDto>();
 
             /*buttons commands*/
             OpenMtsFileCommand = new ButtonAsyncHandler(SelectMtsFile, CanSearchForMts);
@@ -72,36 +71,53 @@ namespace to_doors_app.ViewModels
             }
             set /* if actual operation is changed by user */
             {
-                /* set new value of operation */
+                /* if user have chosen some report before operation change */
+                if (ReportsPaths != null)
+                {
+                    ReportsPaths = null;
+                    IsChoosingSheetAvailable = false;
+                    ConfirmMtsSheet?.InvokeCanExecuteChanged();
+                    OpenMtsFileCommand?.InvokeCanExecuteChanged();
+
+                    ExcelProviderProgress = $"Operation has been changed. Overview reports has been deleted.";
+                    GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "ExcelProviderProgress");
+                    GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "ExcelProviderProgress");
+                }
+
+                // set new value of operation
                 _actualOperation = value;
 
                 /* clear mts path*/
-                MtsFilePath = string.Empty;
+                //MtsFilePath = string.Empty;
                 
                 /* if mts sheets are loaded (should be always true) */
-                if(MtsSheets != null && MtsSheets.Count > 0)
-                {
-                    /* clear them - mts is no longer loaded*/
-                    ActualMtsSheet = null;
-                    MtsSheets.Clear();
-                }
+                //if(MtsSheets != null && MtsSheets.Count > 0)
+                //{
+                //    /* clear them - mts is no longer loaded*/
+                //    ActualMtsSheet = null;
+                //    MtsSheets.Clear();
+                //}
 
                 /* clear service object */
-                if (_generatorService != null)
-                {
-                    _generatorService.CloseExcelDocument();
-                    _generatorService = null;
-                }
+                //if (_generatorService != null)
+                //{
+                //    _generatorService.CloseExcelDocument();
+                //    _generatorService = null;
+                //}
 
-                OpenMtsFileCommand?.InvokeCanExecuteChanged();
+                //OpenMtsFileCommand?.InvokeCanExecuteChanged();
 
                 /* update ui */
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "MtsFilePath");
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsSheetsDropdownEnabled");
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "OutputPath");
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsReportsSectionVisible");
-            } 
+                GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsOperationTypeComboboxEnabled");
+            }     
         }
+
+        public bool IsOperationTypeComboboxEnabled { get; set; } = true;
+
         #endregion
 
         #region ModuleTestStatePicker

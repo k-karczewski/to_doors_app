@@ -70,6 +70,8 @@ namespace to_doors_app.ViewModels
         {
             if (_generatorService != null)
             {
+                IsOperationTypeComboboxEnabled = false;
+                GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsOperationTypeComboboxEnabled");
                 _generatorService.SetSheetName(ActualMtsSheet);
                 IsSheetChoosen = true;
                 IsChoosingSheetAvailable = false;
@@ -151,7 +153,16 @@ namespace to_doors_app.ViewModels
         private void SelectOverviewReports()
         {
             ReportsPaths = GeneratorViewModelHelpers.GetOverviewReportPaths();
-            OpenMtsFileCommand.InvokeCanExecuteChanged();
+
+            if(ReportsPaths != null)
+            { 
+                if(ReportsPaths.Count > 0 && _generatorService != null)
+                {
+                    IsChoosingSheetAvailable = true;
+                    ConfirmMtsSheet?.InvokeCanExecuteChanged();
+                }
+            }
+            OpenMtsFileCommand?.InvokeCanExecuteChanged();
         }
 
         /// <summary>
