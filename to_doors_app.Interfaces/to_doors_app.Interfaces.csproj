@@ -8,4 +8,11 @@
     <ProjectReference Include="..\to_doors_app.Models\to_doors_app.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Microsoft.Office.Interop.Excel">
+      <HintPath>..\to_doors_app\bin\Debug\netcoreapp3.0\Microsoft.Office.Interop.Excel.dll</HintPath>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </Reference>
+  </ItemGroup>
+
 </Project>
