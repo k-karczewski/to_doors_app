@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Caliburn.Micro;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -9,17 +10,21 @@ using to_doors_app.Interfaces;
 using to_doors_app.Models.Dtos;
 using to_doors_app.Services.Factories;
 using to_doors_app.ViewModels.Helpers;
+using System.Threading.Tasks;
 using _Settings = to_doors_app.Providers.SettingsProvider.SettingsProvider;
 
 namespace to_doors_app.ViewModels
 {
     public partial class GeneratorViewModel
     {
-
         #region SelectMtsFile
-        /*button command*/
-        private void SelectMtsFile()
+        /// <summary>
+        /// This method loads mts (excel) file and loads needed excel sheets
+        /// </summary>
+        /// <returns>Async task</returns>
+        private async Task SelectMtsFile()
         {
+            /* get path*/
             string newMtsPath = GeneratorViewModelHelpers.GetMtsFilePath();
 
             try
@@ -27,12 +32,16 @@ namespace to_doors_app.ViewModels
                 /*if path was chosen*/
                 if (newMtsPath != string.Empty)
                 {
+                    /* set new mts path */
                     MtsFilePath = newMtsPath;
-                    _generatorService = GeneratorServiceFactory.CreateService(ActualOperation);
-                    List<string> tmpSheets = _generatorService.GetSheetNames(MtsFilePath);
-                    MtsSheets = new ObservableCollection<string>(_generatorService.GetSheetNames(MtsFilePath));
+                    /* create new instance of generator service by its factory */
+                    _generatorService = GeneratorServiceFactory.CreateService(ActualOperation, ExcelProvider_ShowWorkProgressEvent);
+                    /* load excel sheets  asynchronously */
+                    MtsSheets = new BindableCollection<string>(await Task.Run(() => _generatorService.GetSheetNames(MtsFilePath)));
+                    /* set first sheet as default one */
                     ActualMtsSheet = MtsSheets[0];
 
+                    /* refresh view model */
                     GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "MtsFilePath");
                     GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "MtsSheets");
                     GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "ActualMtsSheet");
@@ -53,30 +62,44 @@ namespace to_doors_app.ViewModels
                 MessageBox.Show($"Error: {ex}");
             }
         }
-
-        private bool CanSearchForMts()
+        /// <summary>
+        /// This method sets confirmed mts sheet and calls loading of mts data for specified modules
+        /// </summary>
+        /// <returns>async Task</returns>
+        private async Task SaveChoosenMtsSheet()
         {
-            return true; /* mts can be always changed */
-        }
-        #endregion
-
-        #region OverviewReportsDataGrid
-        private void SelectOverviewReports()
-        {
-            List<string> reportsPaths = GeneratorViewModelHelpers.GetOverviewReportPaths();
-
-            /* null is possible when user will click "cancel" button*/
-            if (reportsPaths != null)
+            if (_generatorService != null)
             {
-                List<string> moduleNames = GeneratorViewModelHelpers.GetModuleNamesFromPaths(reportsPaths, ActualOperation);
+                _generatorService.SetSheetName(ActualMtsSheet);
+                IsSheetChoosen = true;
+                IsChoosingSheetAvailable = false;
+                ConfirmMtsSheet.InvokeCanExecuteChanged();
+
+                await LoadDataFromMts();
+
+                //GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsChoosingSheetAvailable");
+                GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsSheetsDropdownEnabled");
+            }
+        }
+
+        /// <summary>
+        /// Loads data from mts for modules stored as reports paths 
+        /// TODO: ---- TO BE SIMPLIFIED ------
+        /// </summary>
+        /// <returns>async Task</returns>
+        private async Task LoadDataFromMts()
+        {
+            if (ReportsPaths != null)
+            {
+                List<string> moduleNames = await Task.Run(() => GeneratorViewModelHelpers.GetModuleNamesFromPaths(ReportsPaths, ActualOperation));
 
                 if (_generatorService != null)
                 {
-                    _generatorService.LoadDataFromMts(moduleNames);
+                    await Task.Run(() => _generatorService.LoadDataFromMts(moduleNames));
 
                     List<ModuleToUiDto> itemsToAdd = _generatorService.GetDtosForUi();
 
-                    GeneratorViewModelHelpers.SetOverviewReportsPathsToModules(ref itemsToAdd, reportsPaths);
+                    GeneratorViewModelHelpers.SetOverviewReportsPathsToModules(ref itemsToAdd, ReportsPaths);
 
                     /* helper list to check if new loaded elements are already displayed on ui */
                     List<string> allModuleNamesOnUi = ModulesForUi.Select(x => x.Name).ToList();
@@ -91,6 +114,8 @@ namespace to_doors_app.ViewModels
                     ModulesForUi.AddRange(itemsToAdd);
                 }
 
+                _generatorService.CloseExcelDocument();
+
                 RemoveObjectFromDataGridCommand.InvokeCanExecuteChanged();
                 OpenOutputDirectoryCommand.InvokeCanExecuteChanged();
 
@@ -99,11 +124,48 @@ namespace to_doors_app.ViewModels
             }
         }
 
-        private bool CanSearchForReports()
+        /// <summary>
+        /// Checks if application state allows to load of module test state document
+        /// </summary>
+        /// <returns>true when button can be set to active - false otherwise </returns>
+        private bool CanSearchForMts()
         {
-            return MtsSheets != null && MtsSheets.Count > 0 ? true : false;
+            if(ReportsPaths != null && ReportsPaths.Count > 0 || ActualOperation == OperationType.Test_Specification_From_Module_Test_State)
+            {
+                return true;
+            }
+
+            return false;
+        }
+        #endregion
+
+        #region OverviewReportsDataGrid
+        /// <summary>
+        /// Stores paths to overview reports
+        /// </summary>
+        List<string> ReportsPaths { get; set; }
+
+        /// <summary>
+        /// This method allows picking of overview reports (.xml) by the dialog
+        /// </summary>
+        private void SelectOverviewReports()
+        {
+            ReportsPaths = GeneratorViewModelHelpers.GetOverviewReportPaths();
+            OpenMtsFileCommand.InvokeCanExecuteChanged();
         }
 
+        /// <summary>
+        /// Method that allows "Add report" button be activated
+        /// </summary>
+        /// <returns>Method returns always true</returns>
+        private bool CanSearchForReports()
+        {
+            return true;
+        }
+
+        /// <summary>
+        /// This method removes selected row of the datagrid
+        /// </summary>
         private void RemoveSelectedRow()
         {
             /* remove module from service */
@@ -120,6 +182,11 @@ namespace to_doors_app.ViewModels
             GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "ModulesForUi");
         }
 
+
+        /// <summary>
+        /// Checks if datagrid includes any row to be deleted
+        /// </summary>
+        /// <returns>true or false</returns>
         private bool CanRemoveRow()
         {
             return ModulesForUi.Count > 0 ? true : false;
@@ -128,6 +195,9 @@ namespace to_doors_app.ViewModels
         #endregion
 
         #region OutputPath
+        /// <summary>
+        /// This method sets directory where output files will be generated
+        /// </summary>
         public void SelectOutputDirectory()
         {
             OutputPath = GeneratorViewModelHelpers.GetOutputPath();
@@ -137,6 +207,10 @@ namespace to_doors_app.ViewModels
             GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "OutputPath");
         }
 
+        /// <summary>
+        /// This method checks if selecting of output directory is allowed
+        /// </summary>
+        /// <returns>true or false</returns>
         private bool IsSelectOutputDirectoryButtonEnabled()
         {
             return (ModulesForUi.Count > 0 && ActualOperation != OperationType.Test_Specification_From_Module_Test_State) ||
@@ -145,17 +219,25 @@ namespace to_doors_app.ViewModels
         #endregion
 
         #region GenerateFilesButton
-        private void GenerateFiles()
+        /// <summary>
+        /// Starts main task of application
+        /// </summary>
+        /// <returns>async method</returns>
+        public async Task GenerateFiles()
         {
             /* load data from mts for test spec */
             if (ActualOperation == OperationType.Test_Specification_From_Module_Test_State)
             {
-                _generatorService.LoadDataFromMts();
+               await Task.Run(_generatorService.LoadDataFromMts);
             }
 
-            _generatorService.SaveEditedDataByUi(new List<ModuleToUiDto>(ModulesForUi));
+            await Task.Run(() =>_generatorService.SaveEditedDataByUi(new List<ModuleToUiDto>(ModulesForUi)));
         }
 
+        /// <summary>
+        /// Checks if application is ready to generating output files (.tsv)
+        /// </summary>
+        /// <returns>true or false</returns>
         private bool IsGenerateFilesButtonEnabled()
         {
             if (_generatorService != null &&
@@ -172,6 +254,10 @@ namespace to_doors_app.ViewModels
             return false;
         }
 
+        /// <summary>
+        /// Checks if application is ready to generating output files (.tsv)
+        /// </summary>
+        /// <returns>true or false</returns>
         public bool IsApplicationReadyToGenerateFiles()
         {
             if (IsGenerateFilesButtonEnabled())
@@ -183,6 +269,24 @@ namespace to_doors_app.ViewModels
             }
 
             return false;
+        }
+        #endregion
+
+        #region EventActions
+        /// <summary>
+        /// Stores current progress of the application 
+        /// </summary>
+        public string ExcelProviderProgress { get; set; } = "";
+
+        /// <summary>
+        /// This method is an event listener which updates current progress of the application
+        /// </summary>
+        /// <param name="sender">sender of the event</param>
+        /// <param name="e">progress information</param>
+        public void ExcelProvider_ShowWorkProgressEvent(object sender, string progress)
+        {
+            ExcelProviderProgress = $"{progress}";
+            GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "ExcelProviderProgress");
         }
         #endregion
     }

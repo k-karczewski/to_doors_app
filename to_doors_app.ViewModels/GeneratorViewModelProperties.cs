@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Linq;
+using System.Threading.Tasks;
 using to_doors_app.Interfaces;
 using to_doors_app.Interfaces.Providers;
 using to_doors_app.Models.Dtos;
@@ -21,11 +22,12 @@ namespace to_doors_app.ViewModels
         #endregion
 
         #region ButtonHandlers
-        public ButtonHandler OpenMtsFileCommand { get; set; }
+        public ButtonAsyncHandler OpenMtsFileCommand { get; set; }
         public ButtonHandler OpenOverviewReportsCommand { get; set; }
         public ButtonHandler RemoveObjectFromDataGridCommand { get; set; }
         public ButtonHandler OpenOutputDirectoryCommand { get; set; }
-        public ButtonHandler GenerateFilesCommand { get; set; }
+        public ButtonAsyncHandler GenerateFilesCommand { get; set; }
+        public ButtonAsyncHandler ConfirmMtsSheet { get; set; }
         #endregion
 
         #region ServiceDeclaration
@@ -39,21 +41,33 @@ namespace to_doors_app.ViewModels
             ModulesForUi = new BindableCollection<ModuleToUiDto>();
 
             /*buttons commands*/
-            OpenMtsFileCommand = new ButtonHandler(SelectMtsFile, CanSearchForMts);
+            OpenMtsFileCommand = new ButtonAsyncHandler(SelectMtsFile, CanSearchForMts);
             OpenOverviewReportsCommand = new ButtonHandler(SelectOverviewReports, CanSearchForReports);
             RemoveObjectFromDataGridCommand = new ButtonHandler(RemoveSelectedRow, CanRemoveRow);
             OpenOutputDirectoryCommand = new ButtonHandler(SelectOutputDirectory, IsSelectOutputDirectoryButtonEnabled);
-            GenerateFilesCommand = new ButtonHandler(GenerateFiles, IsApplicationReadyToGenerateFiles);
+            GenerateFilesCommand = new ButtonAsyncHandler(GenerateFiles, IsApplicationReadyToGenerateFiles);
+            ConfirmMtsSheet = new ButtonAsyncHandler(SaveChoosenMtsSheet, CanSaveChoosenMtsSheet);
         }
 
         #region OperationTypesCombobox
-        /* operation type combobox properties */
+        /// <summary>
+        /// Operation type combobox property values (OperationType enum values)
+        /// </summary>
         public List<OperationType> AvailableOperationsList { get; } = Enum.GetValues(typeof(OperationType)).Cast<OperationType>().ToList();
+       
+        /// <summary>
+        /// private variable that stores actual operation type 
+        /// </summary>
         private OperationType _actualOperation; 
+        
+        /// <summary>
+        /// Getter and setter of _actualOperation variable
+        /// </summary>
         public OperationType ActualOperation 
         { 
             get
             {
+                /* return value */
                 return _actualOperation;
             }
             set /* if actual operation is changed by user */
@@ -79,7 +93,9 @@ namespace to_doors_app.ViewModels
                     _generatorService = null;
                 }
 
-                /* update ui*/
+                OpenMtsFileCommand?.InvokeCanExecuteChanged();
+
+                /* update ui */
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "MtsFilePath");
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsSheetsDropdownEnabled");
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "OutputPath");
@@ -89,6 +105,9 @@ namespace to_doors_app.ViewModels
         #endregion
 
         #region ModuleTestStatePicker
+        /// <summary>
+        /// Gets/sets path to mts file form/to settings
+        /// </summary>
         public string MtsFilePath
         {
             get
@@ -103,11 +122,19 @@ namespace to_doors_app.ViewModels
         #endregion
 
         #region ModuleTestStateSheetCombobox
+        /// <summary>
+        /// Stores excel sheets names that can be used
+        /// </summary>
+        public BindableCollection<string> MtsSheets { get; set; }
 
-        public ObservableCollection<string> MtsSheets { get; set; }
+        /// <summary>
+        /// Actually choosen excel sheet
+        /// </summary>
+        private string _actualMtsSheet = string.Empty;
 
-        private string _actualMtsSheet;
-
+        /// <summary>
+        /// Getter/setter of actual mts sheet
+        /// </summary>
         public string ActualMtsSheet 
         { 
             get 
@@ -116,26 +143,62 @@ namespace to_doors_app.ViewModels
             }
             set
             {
-                _actualMtsSheet = value;
-                
-                if(_generatorService != null)
+                /* if value is set to default*/
+                if(_actualMtsSheet.Equals(string.Empty))
                 {
+                    /* send chosen name to service */
                     _generatorService.SetSheetName(value);
+                    /* allow changing of name */
+                    IsChoosingSheetAvailable = true;
+                    /* turn on confirm sheet button */
+                    ConfirmMtsSheet.InvokeCanExecuteChanged();
                 }
 
+                /* set value to variable */
+                _actualMtsSheet = value;
+                /* refresh ui */
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsRemovingRowAvailable");
             }
         }
 
+        /// <summary>
+        /// Information if user is able to choose mts sheet - default false because mts is not loaded yet
+        /// </summary>
+        public bool IsChoosingSheetAvailable { get; set; } = false;
+
+        /// <summary>
+        /// Gets information if is able to choose mts sheet
+        /// </summary>
+        /// <returns>IsChoosingSheetAvailable property</returns>
+        private bool CanSaveChoosenMtsSheet()
+        {
+            return IsChoosingSheetAvailable;
+        }
+
+        /// <summary>
+        /// Information if mts sheet was confirmed
+        /// </summary>
+        private bool IsSheetChoosen { get; set; } = false;
+        
+        /// <summary>
+        /// Property that enables or disables combobox with mts sheets
+        /// </summary>
         public bool IsSheetsDropdownEnabled
         {
-            get { return _generatorService != null && ModulesForUi.Count == 0 ? true : false; }
+            get { return _generatorService != null && ModulesForUi.Count == 0 && !IsSheetChoosen ?  true : false; }
         }
         #endregion
 
         #region DataGrid
+        /// <summary>
+        /// Selected row of datagrid
+        /// </summary>
         private ModuleToUiDto _selectedObject = null;
-          
+
+        /// <summary>
+        /// Property of selected datagrid object
+        /// Returns private variable _selectedObject
+        /// </summary>
         public ModuleToUiDto SelectedObject 
         { 
             get
@@ -150,13 +213,22 @@ namespace to_doors_app.ViewModels
             }
         }
 
+        /// <summary>
+        /// Collection of ModuleToUiDto objects that is binded to DataGrid
+        /// </summary>
         public BindableCollection<ModuleToUiDto> ModulesForUi { get; set; } = new BindableCollection<ModuleToUiDto>();
 
+        /// <summary>
+        /// Enables or disables "Remove report" button
+        /// </summary>
         public bool IsRemoveModuleButtonEnabled
         {
             get { return ModulesForUi != null ? true : false; }
         }
 
+        /// <summary>
+        /// Hides or shows "Add report", "Remove report" buttons and DataGrid
+        /// </summary>
         public bool IsReportsSectionVisible 
         {   
             get 
@@ -165,6 +237,9 @@ namespace to_doors_app.ViewModels
             } 
         }
 
+        /// <summary>
+        /// Checks if removing of object is allowed. If some object is selected returns true, false otherwise
+        /// </summary>
         public bool IsRemovingRowAvailable
         {
             get
@@ -175,6 +250,9 @@ namespace to_doors_app.ViewModels
         #endregion
 
         #region OutputPath
+        /// <summary>
+        /// Gets or sets output path from/to settings
+        /// </summary>
         public string OutputPath
         {
             get
