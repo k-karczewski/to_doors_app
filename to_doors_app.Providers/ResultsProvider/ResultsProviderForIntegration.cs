@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Xml.Linq;
 using to_doors_app.Models;
 using _Settings = to_doors_app.Providers.SettingsProvider.SettingsProvider;
@@ -68,7 +69,7 @@ namespace to_doors_app.Providers.ResultsProvider
                 }
                 catch(Exception ex)
                 {
-                    /* scenario {scenarioName} has no filled specification in Tessy tests*/
+                    MessageBox.Show($"Warning: Scenario {scenario.Name} has no filled specification in Tessy tests\n {ex}");
                 }
                 
                 /* evaluate verdict of scenario */

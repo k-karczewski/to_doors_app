@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Windows;
 using System.Xml.Linq;
 using to_doors_app.Interfaces;
 using to_doors_app.Models;
@@ -50,7 +51,7 @@ namespace to_doors_app.Providers.ResultsProvider
                     }
                     catch (Exception e)
                     {
-                        /* show warning that c1/mcdc data is not available*/
+                        MessageBox.Show($"Warning: C1/MCDC data of file {currentFile.Name} is not available. Tests may be not executed.\n {e}");
                     }
 
                     /* evaluate verdict value */
