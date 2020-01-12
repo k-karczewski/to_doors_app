@@ -10,6 +10,8 @@ namespace to_doors_app.Providers.ResultsProvider
     /* generic base class of Results Provider */
     public abstract class ResultsProviderBase<T> : IResultsProviderBase<T> where T : Module
     {
+        public event EventHandler<string> ShowWorkProgressEvent;
+
         /* list of files or list of scenarios from xml file (depending on operation type) */
         protected List<XElement> TestObjectResults { get; set; } = null;
         /* xml report with all results */
@@ -21,6 +23,7 @@ namespace to_doors_app.Providers.ResultsProvider
             /* for every module in list */
             for (int numberOfModule = 0; numberOfModule < modulesToFillResults.Count; numberOfModule++)
             {
+                ChangeProgressInfo($"Reading .xml test results of module {modulesToFillResults[numberOfModule].Name}");
                 /* load xml file with results  */
                 LoadXmlFile(modulesToFillResults[numberOfModule].PathToOverviewReport);
                 FillTestObjectResults(modulesToFillResults[numberOfModule]);
@@ -54,6 +57,11 @@ namespace to_doors_app.Providers.ResultsProvider
         protected virtual void FillTestObjectResults(T module)
         {
             throw new NotImplementedException();
+        }
+
+        protected void ChangeProgressInfo(string message)
+        {
+            ShowWorkProgressEvent?.Invoke(this, message);
         }
     }
 }
