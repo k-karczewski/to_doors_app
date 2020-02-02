@@ -32,7 +32,7 @@ namespace to_doors_app.Providers.ResultsProvider
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Warning: C1/MCDC data of file {moduleToFillResults.Name} is not available. Tests may be not executed.\n {e}");
+                MessageBox.Show($"Warning: Function coverage data of file {moduleToFillResults.Name} is not available. Tests may be not executed.\n {e}");
             }
 
             /* flags for correct evaluation of test verdict */
