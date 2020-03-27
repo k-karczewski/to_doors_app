@@ -183,14 +183,18 @@ namespace to_doors_app.ViewModels
             _generatorService.RemoveModuleData(SelectedObject.Name);
             /* remove module row from datagrid */
             ModulesForUi.Remove(SelectedObject);
+
             /* clear selected object */
             SelectedObject = null;
+
             /* refresh buttons if necessary */
             RemoveObjectFromDataGridCommand.InvokeCanExecuteChanged();
             OpenOutputDirectoryCommand.InvokeCanExecuteChanged();
             /* refresh ui controlls if necessary*/
             GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsSheetsDropdownEnabled");
             GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "ModulesForUi");
+            GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "SelectedObject");
+
         }
 
 

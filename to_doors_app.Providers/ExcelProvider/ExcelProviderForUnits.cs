@@ -55,6 +55,9 @@ namespace to_doors_app.Providers.ExcelProvider
             const int col = 1;
 
             ChangeProgressInfo("Getting all modules data from module test state");
+
+            _Settings.SetSwBaseline(GetSwBaseline());
+
             while (ReadCell(row, col) != "Total:")
             {
                 string currentModuleName = ReadCell(row, col);
@@ -93,15 +96,18 @@ namespace to_doors_app.Providers.ExcelProvider
                 fileName = ReadCell(fileRow, col + 2);
 
                 /* if file found */
-                if (!fileName.Equals(string.Empty) && fileName.Contains(".c"))
+                if (!fileName.Equals(string.Empty) && fileName.Contains(".c") == true)
                 {
                     fileName = fileName.Replace(".c", "");
 
                     string fileRevision = ReadCell(fileRow, col + 3);
 
                     List<Function> functions = GetFunctionsOfFile(fileRow);
-                   
-                    files.Add(new File(fileName, fileRevision, functions));
+
+                    if(functions.Count > 0)
+                    {
+                        files.Add(new File(fileName, fileRevision, functions));
+                    }
                 }
 
                 fileRow++;
@@ -119,7 +125,7 @@ namespace to_doors_app.Providers.ExcelProvider
                 functions.Add(new Function(ReadCell(functionRow, 5)));
                 functionRow++;
             }
-            while (ReadCell(functionRow + 1, 3).Equals(string.Empty));
+            while (ReadCell(functionRow, 3).Equals(string.Empty));
 
             return functions;
         }

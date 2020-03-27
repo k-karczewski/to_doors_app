@@ -84,25 +84,10 @@ namespace to_doors_app.ViewModels
                     GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "ExcelProviderProgress");
                 }
 
-                /* clear mts path*/
-                MtsFilePath = string.Empty;
-                
-                /* if mts sheets are loaded */
-                if(MtsSheets != null && MtsSheets.Count > 0)
-                {
-                    /* clear them - mts is no longer loaded*/
-                    MtsSheets.Clear();
-                }
-
-                /* clear service object */
-                if (_generatorService != null)
-                {
-                    _generatorService.CloseExcelDocument();
-                    _generatorService = null;
-                }
-
                 // set new value of operation
                 _actualOperation = value;
+
+
 
                 OpenMtsFileCommand?.InvokeCanExecuteChanged();
 
@@ -158,44 +143,19 @@ namespace to_doors_app.ViewModels
             }
             set
             {
-                // if sheet has been chosen
-                if (value != string.Empty && value != null)
+                /* if value is set to default*/
+                if(_actualMtsSheet.Equals(string.Empty))
                 {
-                    // set actual value 
-                    _actualMtsSheet = value;
-                    // send new value to ExcelProvider
+                    /* send chosen name to service */
                     _generatorService.SetSheetName(value);
-                    // allow changing of name
+                    /* allow changing of name */
                     IsChoosingSheetAvailable = true;
+                    /* turn on confirm sheet button */
+                    ConfirmMtsSheet.InvokeCanExecuteChanged();
                 }
-                else // value needs to be cleared
-                {
-                    // disable excel sheet combobox
-                    IsChoosingSheetAvailable = false;
-                    // set default value
-                    _actualMtsSheet = string.Empty;
-                }
-
-                // refresh view
-                ConfirmMtsSheet.InvokeCanExecuteChanged();
-                
-                ///* if value is set to default*/
-                //if (ActualMtsSheet.Equals(string.Empty) == false)
-                //{
-                //    /* send chosen name to service */
-                //    if(value != string.Empty)
-                //    {
-                //        _generatorService.SetSheetName(value);
-                //    }
-                    
-                //    /* allow changing of name */
-                //    IsChoosingSheetAvailable = true;
-                //    /* turn on confirm sheet button */
-                //    ConfirmMtsSheet.InvokeCanExecuteChanged();
-                //}
 
                 /* set value to variable */
-
+                _actualMtsSheet = value;
                 /* refresh ui */
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsRemovingRowAvailable");
             }

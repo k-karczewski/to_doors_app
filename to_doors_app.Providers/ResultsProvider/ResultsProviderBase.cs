@@ -10,6 +10,8 @@ namespace to_doors_app.Providers.ResultsProvider
     /* generic base class of Results Provider */
     public abstract class ResultsProviderBase<T> : IResultsProviderBase<T> where T : Module
     {
+        protected int levelValue = 0;
+
         public event EventHandler<string> ShowWorkProgressEvent;
 
         /* list of files or list of scenarios from xml file (depending on operation type) */
@@ -25,13 +27,13 @@ namespace to_doors_app.Providers.ResultsProvider
             {
                 ChangeProgressInfo($"Reading .xml test results of module {modulesToFillResults[numberOfModule].Name}");
                 /* load xml file with results  */
-                LoadXmlFile(modulesToFillResults[numberOfModule].PathToOverviewReport);
+                LoadXmlFile(modulesToFillResults[numberOfModule].PathToOverviewReport, modulesToFillResults[numberOfModule].Name);
                 FillTestObjectResults(modulesToFillResults[numberOfModule]);
             }
         }
 
         /* loads xml report with results for module and operation type specified in parameters*/
-        private void LoadXmlFile(string pathToReport)
+        private void LoadXmlFile(string pathToReport, string moduleName)
         {
             /* try to load xml file*/
             try

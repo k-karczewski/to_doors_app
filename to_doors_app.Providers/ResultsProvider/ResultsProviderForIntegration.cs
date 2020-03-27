@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Xml.Linq;
 using to_doors_app.Models;
@@ -24,15 +25,14 @@ namespace to_doors_app.Providers.ResultsProvider
             moduleToFillResults.NumberOfSuccessfulTestcases = int.Parse(ResultsReport.Descendants("statistic").FirstOrDefault().Attribute("ok").Value);
             moduleToFillResults.NumberOfFailedTestcases = int.Parse(ResultsReport.Descendants("statistic").FirstOrDefault().Attribute("notok").Value);
             moduleToFillResults.NumberOfNotExecutedTestcases = int.Parse(ResultsReport.Descendants("statistic").FirstOrDefault().Attribute("notexecuted").Value);
-
-            // try to get reached coverage values
+           
             try
             {
                 moduleToFillResults.ValueOfFunctionCoverage = Convert.ToDouble(ResultsReport.Descendants("fc").FirstOrDefault().Attribute("percentage").Value, CultureInfo.InvariantCulture);
             }
             catch (Exception e)
             {
-                MessageBox.Show($"Warning: Function coverage data of file {moduleToFillResults.Name} is not available. Tests may be not executed.\n {e}");
+                MessageBox.Show($"Warning: FC data of module {moduleToFillResults.Name} is not available. Tests may be not executed.\n {e}");
             }
 
             /* flags for correct evaluation of test verdict */

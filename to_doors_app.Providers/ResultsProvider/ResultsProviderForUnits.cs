@@ -13,7 +13,7 @@ namespace to_doors_app.Providers.ResultsProvider
 {
     /* results provider for unit tests*/
     public sealed class ResultsProviderForUnits : ResultsProviderBase<UnitModule>
-    {   
+    {
         /* default constructor */
         public ResultsProviderForUnits() { }
 
@@ -26,7 +26,7 @@ namespace to_doors_app.Providers.ResultsProvider
                 /* moduleToFillResults has Files property that was created in Excel Provider with MTS data (constains all available .c files)
                  * now it is time to get only those that were tested in Tessy (that are present in xml file)
                  * rest of them will have only default data (e.g name, baseline, names of .c file) */
-                File currentFile = moduleToFillResults.Files.FirstOrDefault(x => x.Name.ToLower() == fileResults.Attribute("name").Value.ToLower());
+                File currentFile = moduleToFillResults.Files.FirstOrDefault(x => x.Name.ToLower() == fileResults.Attribute("name").Value.Replace(".c", "").ToLower());
 
                 /* if file was found by its name */
                 if (!currentFile.Equals(null))
@@ -72,7 +72,7 @@ namespace to_doors_app.Providers.ResultsProvider
                     }
 
                     /* get results of functions placed in current .c file */
-                    var functionResults = fileResults.Descendants("tessyobject").Where(x => x.Attribute("level").Value == "4");
+                    var functionResults = fileResults.Descendants("tessyobject").Where(x => x.Attribute("type").Value == "testobject");
 
                     /* list of Functions that will store fillded with results Funcion objects */
                     List<Function> functions = new List<Function>();
@@ -95,7 +95,7 @@ namespace to_doors_app.Providers.ResultsProvider
         /* gets test objects from xml report*/
         protected override List<XElement> GetTestObjectResults()
         {
-            return ResultsReport.Descendants("tessyobject").Where(x => x.Attribute("level").Value == "3").ToList();
+            return ResultsReport.Descendants("tessyobject").Where(x => x.Attribute("type").Value == "module").ToList();
         }
 
         /* creates Function object with results */

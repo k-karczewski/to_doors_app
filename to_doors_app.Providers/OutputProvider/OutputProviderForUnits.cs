@@ -28,7 +28,7 @@ namespace to_doors_app.Providers.OutputProvider
                     _Settings.GetSetting(_Settings.CurrentOperationType, "TestRealizationProcedureNote"),
                     _Settings.GetSetting(_Settings.CurrentOperationType, "TestFacilitiesEquipmentNote"),
                     _Settings.GetSetting(_Settings.CurrentOperationType, "TestExpectedResultNoteDynamic"),
-                    $"TR{trNumber}\nTotal Test Objects: { function.NumberOfTestcases }\nSuccessful: { function.NumberOfSuccessfulTestcases }\n" +
+                    $"{trNumber}\nTotal Test Objects: { function.NumberOfTestcases }\nSuccessful: { function.NumberOfSuccessfulTestcases }\n" +
                     $"Failed: { function.NumberOfFailedTestcases }\nNot Executed: { function.NumberOfNotExecutedTestcases }\nC1 coverage: { function.ValueOfC1Coverage }%\n" +
                     $"MC/DC coverage: { function.ValueOfMcDcCoverage }%",
                     function.Verdict,
@@ -66,7 +66,7 @@ namespace to_doors_app.Providers.OutputProvider
                     "",
                     "",
                     "",
-                    $"TR {module.TrNumber}\n Complete Tessy Test:\nTotal Test Objects: { file.NumberOfTestcases }\n" +
+                    $"{module.TrNumber}\n Complete Tessy Test:\nTotal Test Objects: { file.NumberOfTestcases }\n" +
                     $"Successful: { file.NumberOfSuccessfulTestcases }\nFailed: { file.NumberOfFailedTestcases }\n" +
                     $"Not Executed: { file.NumberOfNotExecutedTestcases }\n" +
                     $"C1 coverage: { file.ValueOfC1Coverage }%\nMC/DC coverage: { file.ValueOfMcDcCoverage }%",

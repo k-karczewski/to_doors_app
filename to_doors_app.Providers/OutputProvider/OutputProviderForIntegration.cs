@@ -20,7 +20,7 @@ namespace to_doors_app.Providers.OutputProvider
                 _Settings.GetSetting(_Settings.CurrentOperationType, "TestExpectedResultNoteDynamic"),
             };
 
-            string tmp = "TR" + module.TrNumber + "\nComplete Tessy Test:\nTotal Scenarios: " + module.TotalNumberOfTestcases + "\nSuccessful: " 
+            string tmp =  module.TrNumber + "\nComplete Tessy Test:\nTotal Scenarios: " + module.TotalNumberOfTestcases + "\nSuccessful: " 
                 + module.NumberOfSuccessfulTestcases + "\nFailed: " + module.NumberOfFailedTestcases + "\nNot Executed: " + module.NumberOfNotExecutedTestcases + 
                 "\nFunction Coverage: " + module.ValueOfFunctionCoverage + "\nCall Coverage: 100";
 
