@@ -42,7 +42,7 @@ namespace to_doors_app.ViewModels.Helpers
                 if (dialog.ShowDialog() == CommonFileDialogResult.Ok && dialog.FileNames != null)
                 {
                     currentPaths = new List<string>();
-                    
+
                     foreach (string path in dialog.FileNames)
                     {
                         currentPaths.Add(path);
@@ -52,7 +52,7 @@ namespace to_doors_app.ViewModels.Helpers
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error during setting path to mts file:\n {ex}");
+                MessageBox.Show($"Error during setting path of overview reports:\n {ex}");
             }
 
             return currentPaths;
@@ -120,7 +120,7 @@ namespace to_doors_app.ViewModels.Helpers
         public static List<string> GetModuleNamesFromPaths(List<string> overviewReportPaths, OperationType actualOperation)
         {
             List<string> moduleNamesToReturn = new List<string>();
-            
+
             foreach (string path in overviewReportPaths)
             {
                 string moduleName = path.Substring(path.LastIndexOf("\\") + 1, path.Length - path.LastIndexOf("\\") - 1 - _Settings.GetSetting(actualOperation, "OverviewReportSufix").Length);

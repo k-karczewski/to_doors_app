@@ -29,7 +29,7 @@ namespace to_doors_app.Providers.ResultsProvider
                 File currentFile = moduleToFillResults.Files.FirstOrDefault(x => x.Name.ToLower() == fileResults.Attribute("name").Value.Replace(".c", "").ToLower());
 
                 /* if file was found by its name */
-                if (!currentFile.Equals(null))
+                if (currentFile != null)
                 {
                     /* object that stores results of test for current .c file */
                     XElement testcase_statistics = fileResults.Element("testcase_statistics");

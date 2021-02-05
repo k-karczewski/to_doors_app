@@ -6,7 +6,10 @@
         xmlns:local="clr-namespace:to_doors_app"
         xmlns:MainVM="clr-namespace:to_doors_app.ViewModels;assembly=to_doors_app.ViewModels"
         mc:Ignorable="d"
-        Title="to_doors_app - TSV file generator (V1.15)" Height="700" Width="650" ResizeMode="NoResize">
+        Title="to_doors_app - TSV file generator (v1.18)" 
+        Height="700" 
+        Width="650" 
+        ResizeMode="NoResize">
     <Window.DataContext>
         <MainVM:GeneratorViewModel/>
     </Window.DataContext>

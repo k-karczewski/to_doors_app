@@ -132,7 +132,7 @@ namespace to_doors_app.ViewModels
         /// <returns>true when button can be set to active - false otherwise </returns>
         private bool CanSearchForMts()
         {
-            if(ReportsPaths != null && ReportsPaths.Count > 0 || ActualOperation == OperationType.Test_Specification_From_Module_Test_State)
+            if (ReportsPaths != null && ReportsPaths.Count > 0 || ActualOperation == OperationType.Test_Specification_From_Module_Test_State)
             {
                 return true;
             }
@@ -154,9 +154,9 @@ namespace to_doors_app.ViewModels
         {
             ReportsPaths = GeneratorViewModelHelpers.GetOverviewReportPaths();
 
-            if(ReportsPaths != null)
-            { 
-                if(ReportsPaths.Count > 0 && _generatorService != null)
+            if (ReportsPaths != null)
+            {
+                if (ReportsPaths.Count > 0 && _generatorService != null)
                 {
                     IsChoosingSheetAvailable = true;
                     ConfirmMtsSheet?.InvokeCanExecuteChanged();
@@ -243,10 +243,10 @@ namespace to_doors_app.ViewModels
             /* load data from mts for test spec */
             if (ActualOperation == OperationType.Test_Specification_From_Module_Test_State)
             {
-               await Task.Run(_generatorService.LoadDataFromMts);
+                await Task.Run(_generatorService.LoadDataFromMts);
             }
 
-            await Task.Run(() =>_generatorService.SaveEditedDataByUi(new List<ModuleToUiDto>(ModulesForUi)));
+            await Task.Run(() => _generatorService.SaveEditedDataByUi(new List<ModuleToUiDto>(ModulesForUi)));
         }
 
         /// <summary>

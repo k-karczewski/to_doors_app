@@ -55,27 +55,30 @@ namespace to_doors_app.Providers.OutputProvider
             /* for each "tessyobject" tag which was found above */
             foreach (File file in module.Files)
             {
-                /* clear data buffer */
-                buffer = new List<string>
+                if(file.Functions.Count > 0)
                 {
-                    /* add necessary data to buffer */
-                    "File: " + file.Name,
-                    "SW version label: baseline " + _Settings.SwBaseline + "\n module version label " +
-                     module.Name + ": " + file.Revision,
-                    "",
-                    "",
-                    "",
-                    "",
-                    $"{module.TrNumber}\n Complete Tessy Test:\nTotal Test Objects: { file.NumberOfTestcases }\n" +
-                    $"Successful: { file.NumberOfSuccessfulTestcases }\nFailed: { file.NumberOfFailedTestcases }\n" +
-                    $"Not Executed: { file.NumberOfNotExecutedTestcases }\n" +
-                    $"C1 coverage: { file.ValueOfC1Coverage }%\nMC/DC coverage: { file.ValueOfMcDcCoverage }%",
-                    file.Verdict,
-                    "Requirement Based Test"
-                };
+                    /* clear data buffer */
+                    buffer = new List<string>
+                    {
+                        /* add necessary data to buffer */
+                        "File: " + file.Name,
+                        "SW version label: baseline " + _Settings.SwBaseline + "\n file version label " +
+                        file.Name + ": " + file.Revision,
+                        "",
+                        "",
+                        "",
+                        "",
+                        $"{module.TrNumber}\n Complete Tessy Test:\nTotal Test Objects: { file.NumberOfTestcases }\n" +
+                        $"Successful: { file.NumberOfSuccessfulTestcases }\nFailed: { file.NumberOfFailedTestcases }\n" +
+                        $"Not Executed: { file.NumberOfNotExecutedTestcases }\n" +
+                        $"C1 coverage: { file.ValueOfC1Coverage }%\nMC/DC coverage: { file.ValueOfMcDcCoverage }%",
+                        file.Verdict,
+                        "Requirement Based Test"
+                    };
 
-                SendElementsToFile(buffer);
-                SendFunctions(file, module.TrNumber);
+                    SendElementsToFile(buffer);
+                    SendFunctions(file, module.TrNumber);
+                }
             }
         }
 
@@ -96,12 +99,13 @@ namespace to_doors_app.Providers.OutputProvider
                 currentElement
             };
 
-            currentElement = "SW version label: baseline " + _Settings.SwBaseline + "\n";
+            currentElement = $"SW version label: baseline {_Settings.SwBaseline} \n";
+            currentElement += $"module version label: { module.Baseline } \n";
 
-            foreach (File file in module.Files)
-            {
-                currentElement += "module version label: " + file.Name + ": " + module.Baseline + "\n";
-            }
+            //foreach (File file in module.Files)
+            //{
+            //    currentElement += "module version label: " + file.Name + ": " + module.Baseline + "\n";
+            //}
 
             buffer.Add(currentElement);
             buffer.Add(_Settings.GetSetting(_Settings.CurrentOperationType, "TestConditionsNote"));
@@ -110,7 +114,7 @@ namespace to_doors_app.Providers.OutputProvider
             buffer.Add(_Settings.GetSetting(_Settings.CurrentOperationType, "TestExpectedResultNoteStatic"));
             buffer.Add(string.Empty);
             buffer.Add(string.Empty);
-            buffer.Add("Internal Interface Test");
+            buffer.Add("---");
 
             SendElementsToFile(buffer);
         }

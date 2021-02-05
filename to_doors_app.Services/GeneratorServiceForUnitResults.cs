@@ -14,7 +14,7 @@ namespace to_doors_app.Services
     {
         public GeneratorServiceForUnitResults(EventHandler<string> eventHandler) : base()
         {
-            Operation = Interfaces.OperationType.Unit_Test_Resuls_From_Tessy;
+            Operation = Interfaces.OperationType.Unit_Test_Results_From_Tessy;
             SettingsProvider.SetOperationType(Operation);
             ExcelProvider = new ExcelProviderForUnits();
             ResultsProvider = new ResultsProviderForUnits();

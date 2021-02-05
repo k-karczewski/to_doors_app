@@ -53,17 +53,17 @@ namespace to_doors_app.ViewModels
         /// Operation type combobox property values (OperationType enum values)
         /// </summary>
         public List<OperationType> AvailableOperationsList { get; } = Enum.GetValues(typeof(OperationType)).Cast<OperationType>().ToList();
-       
+
         /// <summary>
         /// private variable that stores actual operation type 
         /// </summary>
-        private OperationType _actualOperation; 
-        
+        private OperationType _actualOperation;
+
         /// <summary>
         /// Getter and setter of _actualOperation variable
         /// </summary>
-        public OperationType ActualOperation 
-        { 
+        public OperationType ActualOperation
+        {
             get
             {
                 /* return value */
@@ -97,7 +97,7 @@ namespace to_doors_app.ViewModels
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "OutputPath");
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsReportsSectionVisible");
                 GeneratorViewModelHelpers.RefreshViewModel(this, PropertyChanged, "IsOperationTypeComboboxEnabled");
-            }     
+            }
         }
 
         public bool IsOperationTypeComboboxEnabled { get; set; } = true;
@@ -135,16 +135,16 @@ namespace to_doors_app.ViewModels
         /// <summary>
         /// Getter/setter of actual mts sheet
         /// </summary>
-        public string ActualMtsSheet 
-        { 
-            get 
-            { 
-                return _actualMtsSheet; 
+        public string ActualMtsSheet
+        {
+            get
+            {
+                return _actualMtsSheet;
             }
             set
             {
                 /* if value is set to default*/
-                if(_actualMtsSheet.Equals(string.Empty))
+                if (_actualMtsSheet.Equals(string.Empty))
                 {
                     /* send chosen name to service */
                     _generatorService.SetSheetName(value);
@@ -179,13 +179,13 @@ namespace to_doors_app.ViewModels
         /// Information if mts sheet was confirmed
         /// </summary>
         private bool IsSheetChoosen { get; set; } = false;
-        
+
         /// <summary>
         /// Property that enables or disables combobox with mts sheets
         /// </summary>
         public bool IsSheetsDropdownEnabled
         {
-            get { return _generatorService != null && ModulesForUi.Count == 0 && !IsSheetChoosen ?  true : false; }
+            get { return _generatorService != null && ModulesForUi.Count == 0 && !IsSheetChoosen ? true : false; }
         }
         #endregion
 
@@ -199,8 +199,8 @@ namespace to_doors_app.ViewModels
         /// Property of selected datagrid object
         /// Returns private variable _selectedObject
         /// </summary>
-        public ModuleToUiDto SelectedObject 
-        { 
+        public ModuleToUiDto SelectedObject
+        {
             get
             {
                 return _selectedObject;
@@ -229,12 +229,12 @@ namespace to_doors_app.ViewModels
         /// <summary>
         /// Hides or shows "Add report", "Remove report" buttons and DataGrid
         /// </summary>
-        public bool IsReportsSectionVisible 
-        {   
-            get 
-            { 
-                return ActualOperation != OperationType.Test_Specification_From_Module_Test_State ? true : false; 
-            } 
+        public bool IsReportsSectionVisible
+        {
+            get
+            {
+                return ActualOperation != OperationType.Test_Specification_From_Module_Test_State ? true : false;
+            }
         }
 
         /// <summary>

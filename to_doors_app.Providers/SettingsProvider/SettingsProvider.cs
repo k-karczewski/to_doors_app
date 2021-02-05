@@ -42,7 +42,7 @@ namespace to_doors_app.Providers.SettingsProvider
         public static string PathToSettingsFile { get; } = "./settings/";
         public static string SettingsFileName { get; } = "settings.json";
 
-        public static OperationType CurrentOperationType { get; set; } = OperationType.Unit_Test_Resuls_From_Tessy; /* default value (0) */
+        public static OperationType CurrentOperationType { get; set; } = OperationType.Unit_Test_Results_From_Tessy; /* default value (0) */
         public static string SwBaseline { get; set; }
 
         public static SettingsContainer container = new SettingsContainer();
@@ -54,7 +54,7 @@ namespace to_doors_app.Providers.SettingsProvider
             {
                 OperationTypeData = new Dictionary<OperationType, Settings>
                 {
-                    {OperationType.Unit_Test_Resuls_From_Tessy, new Settings
+                    {OperationType.Unit_Test_Results_From_Tessy, new Settings
                         {
                             TestConditionsNote = "- SW Module with the correct Version Label is available.\n- Test environment is configured correctly.\n",
                             TestRealizationProcedureNote = "see references in PTIP, chapter \"Software Unit Tests\", subchapter \"Test Procedure\"",

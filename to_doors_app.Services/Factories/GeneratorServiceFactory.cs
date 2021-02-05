@@ -18,7 +18,7 @@ namespace to_doors_app.Services.Factories
         /// <returns>Instance of IGeneratorServiceBase</returns>
         public static IGeneratorServiceBase CreateService(OperationType operation, EventHandler<string> eventHandler)
         {
-            if(operation.Equals(OperationType.Unit_Test_Resuls_From_Tessy))
+            if(operation.Equals(OperationType.Unit_Test_Results_From_Tessy))
             {
                 _generatorService = new GeneratorServiceForUnitResults(eventHandler);
             }
